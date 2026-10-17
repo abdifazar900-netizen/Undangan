@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Management Dashboard-Wedding siapa dan Siapa</title>
+  <title>Management Dashboard - Wedding Undangan Digital</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Font Awesome Icons -->
@@ -30,7 +30,7 @@
         </div>
       </div>
 
-      <!-- NAV BUTTONS (HANYA DASHBOARD & LIVE DEMO) -->
+      <!-- NAV BUTTONS (DASHBOARD & LIVE DEMO) -->
       <nav class="flex items-center gap-2 bg-slate-800/80 p-1.5 rounded-xl border border-slate-700">
         <button onclick="switchTab('dashboard')" id="btn-dashboard" class="tab-btn active px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2">
           <i class="fa-solid fa-chart-pie"></i> Dashboard
@@ -96,9 +96,15 @@
               <span class="text-xs bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2.5 py-0.5 rounded-full">Auto Sync Google Sheets</span>
             </h2>
           </div>
-          <div class="relative w-full sm:w-72">
-            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-            <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Cari nama atau grup..." class="w-full bg-slate-900 border border-slate-700 text-slate-200 text-sm rounded-xl pl-9 pr-4 py-2 focus:outline-none focus:border-indigo-500">
+          
+          <div class="flex flex-col sm:flex-row w-full sm:w-auto items-center gap-2">
+            <div class="relative w-full sm:w-64">
+              <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+              <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Cari nama atau grup..." class="w-full bg-slate-900 border border-slate-700 text-slate-200 text-sm rounded-xl pl-9 pr-4 py-2 focus:outline-none focus:border-indigo-500">
+            </div>
+            <button onclick="openModal()" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm px-4 py-2 rounded-xl transition flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 whitespace-nowrap">
+              <i class="fa-solid fa-user-plus"></i> Tambah Tamu
+            </button>
           </div>
         </div>
 
@@ -147,6 +153,50 @@
 
   </div>
 
+  <!-- MODAL TAMBAH TAMU -->
+  <div id="guestModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-card rounded-2xl max-w-md w-full p-6 space-y-4 border border-slate-700 shadow-2xl relative">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-user-plus text-indigo-400"></i> Tambah Tamu Baru
+        </h3>
+        <button onclick="closeModal()" class="text-slate-400 hover:text-white p-1">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <form id="addGuestForm" onsubmit="submitNewGuest(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Nama Tamu <span class="text-rose-500">*</span></label>
+          <input type="text" id="inputNama" required placeholder="Contoh: Budi Prasetyo & Partner" class="w-full bg-slate-900 border border-slate-700 text-slate-200 text-sm rounded-xl px-4 py-2.5 focus:outline-none focus:border-indigo-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">No. WhatsApp</label>
+          <input type="text" id="inputNoWa" placeholder="Contoh: 08123456789 atau 628123456789" class="w-full bg-slate-900 border border-slate-700 text-slate-200 text-sm rounded-xl px-4 py-2.5 focus:outline-none focus:border-indigo-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Kategori / Grup</label>
+          <select id="inputKategori" class="w-full bg-slate-900 border border-slate-700 text-slate-200 text-sm rounded-xl px-4 py-2.5 focus:outline-none focus:border-indigo-500">
+            <option value="Umum">Umum</option>
+            <option value="Keluarga">Keluarga</option>
+            <option value="Teman Kantor">Teman Kantor</option>
+            <option value="Sahabat">Sahabat</option>
+            <option value="VIP">VIP</option>
+          </select>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2 border-t border-slate-800">
+          <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-medium rounded-xl transition">Batal</button>
+          <button type="submit" id="btnSubmitModal" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-xl transition flex items-center gap-2">
+            <span>Simpan Data</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script>
     // URL Deployment Web App Apps Script Anda
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzil42IARd7zFttb8RtxWEJf7CrcZFtm-hDUJCHPr1GqImwa2Ogb0FqCCs-6gaA4q93Xw/exec"; 
@@ -167,22 +217,76 @@
       }
     }
 
+    // Modal Control
+    function openModal() {
+      document.getElementById('guestModal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('guestModal').classList.add('hidden');
+      document.getElementById('addGuestForm').reset();
+    }
+
+    // Submit Tamu Baru ke Apps Script / Google Sheets
+    async function submitNewGuest(e) {
+      e.preventDefault();
+      const btnSubmit = document.getElementById('btnSubmitModal');
+      const originalText = btnSubmit.innerHTML;
+      
+      btnSubmit.disabled = true;
+      btnSubmit.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...`;
+
+      const nama = document.getElementById('inputNama').value.trim();
+      const noWa = document.getElementById('inputNoWa').value.trim();
+      const kategori = document.getElementById('inputKategori').value;
+
+      try {
+        const formData = new URLSearchParams();
+        formData.append('action', 'addGuest');
+        formData.append('nama', nama);
+        formData.append('noWa', noWa);
+        formData.append('kategori', kategori);
+
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: formData
+        });
+
+        alert('Data tamu berhasil ditambahkan!');
+        closeModal();
+        setTimeout(fetchGuestData, 1500); // Reload data setelah tersimpan
+      } catch (err) {
+        console.error("Gagal menambah data:", err);
+        alert('Terjadi kesalahan saat menambahkan data.');
+      } finally {
+        btnSubmit.disabled = false;
+        btnSubmit.innerHTML = originalText;
+      }
+    }
+
     // Load Data Real dari Apps Script
     async function fetchGuestData() {
       const tableBody = document.getElementById('guestTableBody');
       try {
-        const response = await fetch(SCRIPT_URL + "?action=getGuests");
+        const response = await fetch(SCRIPT_URL + "?action=getGuests", {
+          method: "GET",
+          redirect: "follow"
+        });
+        
         const json = await response.json();
 
-        if (json.status === "success" && json.data.length > 0) {
+        if (json.status === "success" && json.data && json.data.length > 0) {
           renderTable(json.data);
           updateStats(json.data);
         } else {
-          tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-500">Belum ada data tamu di Google Sheets. Silakan isi Sheet terlebih dahulu.</td></tr>`;
+          tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-500">Belum ada data tamu di Google Sheets. Silakan isi Sheet atau klik Tambah Tamu.</td></tr>`;
+          updateStats([]);
         }
       } catch (err) {
         console.error("Gagal mengambil data real:", err);
-        tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-rose-400">Gagal terhubung ke Google Sheets. Pastikan Web App URL sudah benar & di-deploy dengan akses "Anyone".</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-rose-400">Gagal terhubung ke Google Sheets. Pastikan Web App URL sudah di-deploy dengan akses "Anyone".</td></tr>`;
       }
     }
 
@@ -267,7 +371,7 @@
       iframe.src = `./?to=${encodeURIComponent(name)}`;
     }
 
-    // Jalankan awal
+    // Jalankan awal saat halaman dimuat
     window.onload = fetchGuestData;
   </script>
 </body>

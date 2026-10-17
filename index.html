@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Undangan Pernikahan - Fazar & Gita</title>
+  <title>Undangan Pernikahan</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Font Awesome Icons -->
@@ -14,29 +14,21 @@
     body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b0f19; color: #f1f5f9; }
     .font-serif-custom { font-family: 'Sacramento', cursive; }
     .glass-box { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
-    
-    /* Efek Cover Buka Undangan */
-    #cover-screen {
-      transition: opacity 0.8s ease, visibility 0.8s;
-    }
-    #cover-screen.hidden-cover {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
+    #cover-screen { transition: opacity 0.8s ease, visibility 0.8s; }
+    #cover-screen.hidden-cover { opacity: 0; visibility: hidden; pointer-events: none; }
   </style>
 </head>
 <body class="min-h-screen">
 
-  <!-- ==================== 1. COVER TAMPILAN AWAL (MODAL OPEN) ==================== -->
+  <!-- ==================== 1. COVER SCREEN ==================== -->
   <div id="cover-screen" class="fixed inset-0 z-50 flex flex-col justify-between items-center text-center p-6 bg-cover bg-center" style="background-image: linear-gradient(to bottom, rgba(15,23,42,0.6), rgba(15,23,42,0.95)), url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80');">
     <div class="pt-12 space-y-2">
       <p class="text-xs uppercase tracking-[0.3em] text-indigo-400 font-semibold">The Wedding Of</p>
-      <h1 class="text-5xl font-serif-custom text-amber-200 py-2">Fazar & Gita</h1>
-      <p class="text-xs text-slate-300">Sabtu, 24 Oktober 2026</p>
+      <h1 class="text-5xl font-serif-custom text-amber-200 py-2" id="txt-judul-cover">Loading...</h1>
+      <p class="text-xs text-slate-300" id="txt-tgl-cover">-</p>
     </div>
 
-    <!-- BANNER NAMA TAMU -->
+    <!-- BANNER NAMA TAMU DINAMIS -->
     <div class="w-full max-w-sm glass-box p-6 rounded-3xl space-y-3 my-auto">
       <p class="text-xs text-slate-300">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
       <h2 id="coverPenerimaTamu" class="text-2xl font-bold text-white capitalize">Tamu Undangan</h2>
@@ -54,14 +46,14 @@
   <div class="max-w-md mx-auto min-h-screen bg-slate-900 border-x border-slate-800 shadow-2xl relative pb-20">
 
     <!-- HERO HEADER -->
-    <section class="relative h-[60vh] flex flex-col justify-end items-center text-center p-6 bg-cover bg-center" style="background-image: linear-gradient(to bottom, rgba(15,23,42,0.2), rgba(15,23,42,1)), url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80');">
+    <section class="relative h-[55vh] flex flex-col justify-end items-center text-center p-6 bg-cover bg-center" style="background-image: linear-gradient(to bottom, rgba(15,23,42,0.2), rgba(15,23,42,1)), url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80');">
       <div class="space-y-2 pb-4">
         <p class="text-xs uppercase tracking-[0.3em] text-indigo-400 font-semibold">Walimatul 'Ursy</p>
-        <h1 class="text-5xl font-serif-custom text-amber-200">Fazar & Gita</h1>
+        <h1 class="text-5xl font-serif-custom text-amber-200" id="txt-judul-utama">Loading...</h1>
       </div>
     </section>
 
-    <!-- ==================== 2. PERKENALAN PENGANTIN ==================== -->
+    <!-- ==================== 2. MEMPELAI PENGANTIN ==================== -->
     <section class="p-6 space-y-8 text-center">
       <div class="space-y-2">
         <p class="text-xs text-amber-200/80 italic font-serif">Maha Suci Allah yang telah menciptakan makhluk-Nya berpasang-pasangan...</p>
@@ -70,139 +62,68 @@
 
       <!-- Pengantin Pria -->
       <div class="glass-box p-6 rounded-3xl space-y-3 relative overflow-hidden">
-        <div class="w-24 h-24 mx-auto rounded-full overflow-hidden border-2 border-indigo-400/50 shadow-xl">
-          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" class="w-full h-full object-cover">
+        <div class="w-28 h-28 mx-auto rounded-full overflow-hidden border-2 border-indigo-400/50 shadow-xl bg-slate-800">
+          <img id="img-pria" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" class="w-full h-full object-cover">
         </div>
         <div>
-          <h3 class="text-xl font-bold text-white">Fazar Nazarudin</h3>
-          <p class="text-xs text-indigo-400 font-medium mt-0.5">Pengantin Pria</p>
+          <h3 class="text-xl font-bold text-white" id="txt-nama-pria">Pengantin Pria</h3>
+          <p class="text-xs text-indigo-400 font-medium mt-0.5">Mempelai Pria</p>
         </div>
-        <p class="text-xs text-slate-300">
-          Anak Pertama dari<br>
-          Bapak <span class="font-semibold text-white">Nama Ayah Pria</span> &amp; Ibu <span class="font-semibold text-white">Nama Ibu Pria</span>
-        </p>
+        <p class="text-xs text-slate-300" id="txt-anak-pria">-</p>
       </div>
 
       <div class="text-amber-200 font-serif-custom text-3xl">&amp;</div>
 
       <!-- Pengantin Wanita -->
       <div class="glass-box p-6 rounded-3xl space-y-3 relative overflow-hidden">
-        <div class="w-24 h-24 mx-auto rounded-full overflow-hidden border-2 border-indigo-400/50 shadow-xl">
-          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" class="w-full h-full object-cover">
+        <div class="w-28 h-28 mx-auto rounded-full overflow-hidden border-2 border-indigo-400/50 shadow-xl bg-slate-800">
+          <img id="img-wanita" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" class="w-full h-full object-cover">
         </div>
         <div>
-          <h3 class="text-xl font-bold text-white">Gita Rahmaningtyas</h3>
-          <p class="text-xs text-indigo-400 font-medium mt-0.5">Pengantin Wanita</p>
+          <h3 class="text-xl font-bold text-white" id="txt-nama-wanita">Pengantin Wanita</h3>
+          <p class="text-xs text-amber-400 font-medium mt-0.5">Mempelai Wanita</p>
         </div>
-        <p class="text-xs text-slate-300">
-          Anak Kedua dari<br>
-          Bapak <span class="font-semibold text-white">Nama Ayah Wanita</span> &amp; Ibu <span class="font-semibold text-white">Nama Ibu Wanita</span>
-        </p>
+        <p class="text-xs text-slate-300" id="txt-anak-wanita">-</p>
       </div>
     </section>
 
-    <!-- ==================== 3. OUR STORY ==================== -->
-    <section class="p-6 space-y-6">
-      <div class="text-center space-y-1">
-        <h2 class="text-3xl font-serif-custom text-amber-200">Our Story</h2>
-        <p class="text-xs text-slate-400">Kisah perjalanan cinta kami</p>
-      </div>
-
-      <div class="space-y-6 relative border-l-2 border-indigo-500/30 ml-4 pl-6">
-        
-        <!-- Story 1: Pertama Bertemu -->
-        <div class="relative space-y-2">
-          <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-indigo-500 border-4 border-slate-900"></div>
-          <span class="text-[11px] font-bold text-indigo-400">Tahun 2021</span>
-          <h3 class="text-sm font-bold text-white">Pertama Bertemu</h3>
-          <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=400&q=80" class="rounded-2xl h-36 w-full object-cover my-2">
-          <p class="text-xs text-slate-400">Awal mula kami saling mengenal dan bertukar cerita dalam suatu kesempatan yang tak disangka-sangka.</p>
-        </div>
-
-        <!-- Story 2: Memutuskan Pacaran -->
-        <div class="relative space-y-2">
-          <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-indigo-500 border-4 border-slate-900"></div>
-          <span class="text-[11px] font-bold text-indigo-400">Tahun 2022</span>
-          <h3 class="text-sm font-bold text-white">Memutuskan Berkomitmen</h3>
-          <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=400&q=80" class="rounded-2xl h-36 w-full object-cover my-2">
-          <p class="text-xs text-slate-400">Menyadari kecocokan satu sama lain, kami memutuskan untuk saling berkomitmen mendukung cita-cita bersama.</p>
-        </div>
-
-        <!-- Story 3: Lamaran -->
-        <div class="relative space-y-2">
-          <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-indigo-500 border-4 border-slate-900"></div>
-          <span class="text-[11px] font-bold text-indigo-400">Awal 2026</span>
-          <h3 class="text-sm font-bold text-white">Lamaran & Khitbah</h3>
-          <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=400&q=80" class="rounded-2xl h-36 w-full object-cover my-2">
-          <p class="text-xs text-slate-400">Momen sakral saat kedua keluarga besar merestui niat kami untuk melangkah ke ikatan suci pernikahan.</p>
-        </div>
-
-        <!-- Story 4: Nikah -->
-        <div class="relative space-y-2">
-          <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-indigo-500 border-4 border-slate-900"></div>
-          <span class="text-[11px] font-bold text-indigo-400">24 Oktober 2026</span>
-          <h3 class="text-sm font-bold text-white">Pernikahan Suci</h3>
-          <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=400&q=80" class="rounded-2xl h-36 w-full object-cover my-2">
-          <p class="text-xs text-slate-400">Hari yang kami nanti-nantikan untuk mengucapkan janji suci di hadapan Allah SWT dan keluarga terkasih.</p>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ==================== 4. DETAIL ACARA ==================== -->
+    <!-- ==================== 3. DETAIL ACARA ==================== -->
     <section class="p-6 space-y-4">
       <div class="text-center">
         <h2 class="text-3xl font-serif-custom text-amber-200">Detail Acara</h2>
       </div>
 
-      <!-- AKAD NIKAH -->
       <div class="glass-box p-6 rounded-3xl space-y-3 text-center border border-indigo-500/20">
         <div class="w-10 h-10 mx-auto bg-indigo-600/30 text-indigo-400 rounded-full flex items-center justify-center text-lg">
           <i class="fa-solid fa-ring"></i>
         </div>
-        <h3 class="text-lg font-bold text-white">Akad Nikah</h3>
-        <p class="text-xs text-indigo-300 font-medium">Sabtu, 24 Oktober 2026</p>
-        <p class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i> 08.00 - 10.00 WIB</p>
+        <h3 class="text-lg font-bold text-white">Akad &amp; Resepsi</h3>
+        <p class="text-xs text-indigo-300 font-medium" id="txt-tgl-acara">-</p>
+        <p class="text-xs text-slate-400">Akad: <span id="txt-jam-akad">-</span> | Resepsi: <span id="txt-jam-resepsi">-</span></p>
         <hr class="border-slate-800 my-2">
-        <p class="text-xs font-semibold text-white">Gedung Pernikahan Utama</p>
-        <p class="text-[11px] text-slate-400">Jl. Jendral Sudirman No. 123, Jakarta Pusat</p>
-        <a href="https://maps.google.com" target="_blank" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-4 py-2 rounded-xl transition mt-2">
-          <i class="fa-solid fa-map-location-dot"></i> Petunjuk Google Maps
-        </a>
-      </div>
-
-      <!-- RESEPSI -->
-      <div class="glass-box p-6 rounded-3xl space-y-3 text-center border border-indigo-500/20">
-        <div class="w-10 h-10 mx-auto bg-amber-600/30 text-amber-400 rounded-full flex items-center justify-center text-lg">
-          <i class="fa-solid fa-[# champagne-glasses ] fa-wine-glass"></i>
-        </div>
-        <h3 class="text-lg font-bold text-white">Resepsi Pernikahan</h3>
-        <p class="text-xs text-amber-300 font-medium">Sabtu, 24 Oktober 2026</p>
-        <p class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i> 11.00 - 15.00 WIB</p>
-        <hr class="border-slate-800 my-2">
-        <p class="text-xs font-semibold text-white">Gedung Pernikahan Utama</p>
-        <p class="text-[11px] text-slate-400">Jl. Jendral Sudirman No. 123, Jakarta Pusat</p>
-        <a href="https://maps.google.com" target="_blank" class="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-4 py-2 rounded-xl border border-slate-700 transition mt-2">
+        <p class="text-xs font-semibold text-white" id="txt-lokasi-nama">-</p>
+        <p class="text-[11px] text-slate-400" id="txt-lokasi-alamat">-</p>
+        <a id="link-maps" href="#" target="_blank" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-4 py-2 rounded-xl transition mt-2">
           <i class="fa-solid fa-map-location-dot"></i> Petunjuk Google Maps
         </a>
       </div>
     </section>
 
-    <!-- ==================== 5. GALERI FOTO ==================== -->
+    <!-- ==================== 4. GALERI FOTO ==================== -->
     <section class="p-6 space-y-4">
       <div class="text-center">
         <h2 class="text-3xl font-serif-custom text-amber-200">Galeri Album</h2>
         <p class="text-xs text-slate-400">Momen kebahagiaan kami</p>
       </div>
       <div class="grid grid-cols-2 gap-2">
-        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=400&q=80" class="rounded-2xl h-36 w-full object-cover">
-        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=400&q=80" class="rounded-2xl h-36 w-full object-cover">
-        <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=400&q=80" class="rounded-2xl h-36 w-full object-cover">
-        <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=400&q=80" class="rounded-2xl h-36 w-full object-cover">
+        <img id="img-galeri-1" src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=400&q=80" class="rounded-2xl h-36 w-full object-cover bg-slate-800">
+        <img id="img-galeri-2" src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=400&q=80" class="rounded-2xl h-36 w-full object-cover bg-slate-800">
+        <img id="img-galeri-3" src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=400&q=80" class="rounded-2xl h-36 w-full object-cover bg-slate-800">
+        <img id="img-galeri-4" src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=400&q=80" class="rounded-2xl h-36 w-full object-cover bg-slate-800">
       </div>
     </section>
 
-    <!-- ==================== 6. KONFIRMASI KEHADIRAN & UCAPAN ==================== -->
+    <!-- ==================== 5. FORM RSVP & UCAPAN TAMU ==================== -->
     <section class="p-6 space-y-6">
       <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-700">
         <h3 class="text-lg font-bold text-white text-center">Konfirmasi Kehadiran</h3>
@@ -216,7 +137,7 @@
           </div>
           <div>
             <label class="block text-xs text-slate-300 mb-1">Ucapan &amp; Doa Restu</label>
-            <textarea id="rsvpUcapan" required placeholder="Tuliskan pesan harapan dan doa Anda..." class="w-full bg-slate-900 border border-slate-700 text-xs rounded-xl p-3 text-slate-200 h-20 focus:outline-none focus:border-indigo-500"></textarea>
+            <textarea id="rsvpUcapan" required placeholder="Tuliskan ucapan & doa Anda..." class="w-full bg-slate-900 border border-slate-700 text-xs rounded-xl p-3 text-slate-200 h-20 focus:outline-none focus:border-indigo-500"></textarea>
           </div>
           <button type="submit" id="btnRsvp" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs py-3 rounded-xl transition shadow-lg shadow-indigo-600/30">
             Kirim Konfirmasi &amp; Ucapan
@@ -224,7 +145,7 @@
         </form>
       </div>
 
-      <!-- DAFTAR UCAPAN TAMU REALTIME -->
+      <!-- UCAPAN TAMU REALTIME -->
       <div class="space-y-3">
         <h3 class="text-sm font-bold text-white flex items-center gap-2">
           <i class="fa-solid fa-comments text-indigo-400"></i> Doa &amp; Ucapan Tamu
@@ -238,16 +159,15 @@
     <!-- FOOTER -->
     <footer class="text-center text-slate-500 text-[10px] pb-6 space-y-1">
       <p>Terima kasih atas doa &amp; restu Anda</p>
-      <p class="font-bold text-slate-400">Fazar &amp; Gita</p>
     </footer>
 
   </div>
 
-  <!-- SCRIPT INTEGRASI -->
+  <!-- SCRIPT KONEKSI REALTIME -->
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzil42IARd7zFttb8RtxWEJf7CrcZFtm-hDUJCHPr1GqImwa2Ogb0FqCCs-6gaA4q93Xw/exec";
 
-    // PARAMETER NAMA TAMU DARI URL (?to=NamaTamu)
+    // BACA PARAMETER NAMA TAMU
     const urlParams = new URLSearchParams(window.location.search);
     const namaTamu = urlParams.get('to');
 
@@ -255,14 +175,59 @@
       document.getElementById('coverPenerimaTamu').textContent = namaTamu;
     }
 
-    // FUNGSI TOMBOL BUKA UNDANGAN
     function bukaUndangan() {
-      const cover = document.getElementById('cover-screen');
-      cover.classList.add('hidden-cover');
+      document.getElementById('cover-screen').classList.add('hidden-cover');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // KIRIM RSVP KE APPS SCRIPT / GOOGLE SHEETS
+    // BACA PENGATURAN & FOTO BASE64 DARI SPREADSHEET
+    async function loadSettings() {
+      try {
+        const res = await fetch(SCRIPT_URL + "?action=getSettings");
+        const json = await res.json();
+        
+        if (json.status === "success" && json.data) {
+          const s = json.data;
+          
+          // Nama Panggilan untuk Judul
+          const pPria = s.panggilan_pria || s.nama_pria || "Pria";
+          const pWanita = s.panggilan_wanita || s.nama_wanita || "Wanita";
+          const judul = pPria + " & " + pWanita;
+
+          document.getElementById('txt-judul-cover').innerText = judul;
+          document.getElementById('txt-judul-utama').innerText = judul;
+          document.getElementById('txt-tgl-cover').innerText = s.tanggal_acara || "";
+
+          // Mempelai Pria
+          if(s.nama_pria) document.getElementById('txt-nama-pria').innerText = s.nama_pria;
+          if(s.anak_pria) document.getElementById('txt-anak-pria').innerText = s.anak_pria;
+          if(s.foto_pria) document.getElementById('img-pria').src = s.foto_pria;
+
+          // Mempelai Wanita
+          if(s.nama_wanita) document.getElementById('txt-nama-wanita').innerText = s.nama_wanita;
+          if(s.anak_wanita) document.getElementById('txt-anak-wanita').innerText = s.anak_wanita;
+          if(s.foto_wanita) document.getElementById('img-wanita').src = s.foto_wanita;
+
+          // Detail Acara
+          if(s.tanggal_acara) document.getElementById('txt-tgl-acara').innerText = s.tanggal_acara;
+          if(s.jam_akad) document.getElementById('txt-jam-akad').innerText = s.jam_akad;
+          if(s.jam_resepsi) document.getElementById('txt-jam-resepsi').innerText = s.jam_resepsi;
+          if(s.lokasi_nama) document.getElementById('txt-lokasi-nama').innerText = s.lokasi_nama;
+          if(s.lokasi_alamat) document.getElementById('txt-lokasi-alamat').innerText = s.lokasi_alamat;
+          if(s.maps_link) document.getElementById('link-maps').href = s.maps_link;
+
+          // Album Galeri Foto
+          if(s.foto_galeri_1) document.getElementById('img-galeri-1').src = s.foto_galeri_1;
+          if(s.foto_galeri_2) document.getElementById('img-galeri-2').src = s.foto_galeri_2;
+          if(s.foto_galeri_3) document.getElementById('img-galeri-3').src = s.foto_galeri_3;
+          if(s.foto_galeri_4) document.getElementById('img-galeri-4').src = s.foto_galeri_4;
+        }
+      } catch (err) {
+        console.error("Gagal memuat pengaturan:", err);
+      }
+    }
+
+    // KIRIM RSVP
     async function kirimRSVP(e) {
       e.preventDefault();
       const btn = document.getElementById('btnRsvp');
@@ -287,41 +252,42 @@
       }
     }
 
-  // MEMUAT DAFTAR UCAPAN DARI GOOGLE SHEETS secara REALTIME
-async function loadWishes() {
-  const container = document.getElementById('wishesContainer');
-  try {
-    const res = await fetch(SCRIPT_URL + "?action=getGuests");
-    const json = await res.json();
-    
-    if (json.status === "success" && json.data) {
-      // Filter hanya data yang memiliki status RSVP / ucapan balasan dari tamu
-      const wishes = json.data.filter(g => g.statusRsvp && g.statusRsvp !== "Belum Konfirmasi");
-      
-      if (wishes.length > 0) {
-        container.innerHTML = '';
-        wishes.forEach(item => {
-          const box = document.createElement('div');
-          box.className = "glass-box p-3 rounded-2xl text-xs space-y-1";
-          box.innerHTML = `
-            <div class="flex justify-between font-bold text-amber-200">
-              <span>${item.nama}</span>
-              <span class="text-[10px] ${item.statusRsvp === 'Hadir' ? 'text-teal-400' : 'text-rose-400'}">${item.statusRsvp}</span>
-            </div>
-            <p class="text-slate-300">${item.ucapan || item.drafPesan || 'Selamat atas pernikahannya!'}</p>
-          `;
-          container.appendChild(box);
-        });
-      } else {
-        container.innerHTML = `<div class="text-center text-xs text-slate-500 py-2">Belum ada ucapan. Jadilah yang pertama!</div>`;
+    // LOAD UCAPAN REALTIME
+    async function loadWishes() {
+      const container = document.getElementById('wishesContainer');
+      try {
+        const res = await fetch(SCRIPT_URL + "?action=getGuests");
+        const json = await res.json();
+        
+        if (json.status === "success" && json.data) {
+          const wishes = json.data.filter(g => g.ucapan || (g.statusRsvp && g.statusRsvp !== "Belum Konfirmasi"));
+          if (wishes.length > 0) {
+            container.innerHTML = '';
+            wishes.forEach(item => {
+              const box = document.createElement('div');
+              box.className = "glass-box p-3 rounded-2xl text-xs space-y-1";
+              box.innerHTML = `
+                <div class="flex justify-between font-bold text-amber-200">
+                  <span>${item.nama}</span>
+                  <span class="text-[10px] ${item.statusRsvp === 'Hadir' ? 'text-teal-400' : 'text-rose-400'}">${item.statusRsvp || 'Hadir'}</span>
+                </div>
+                <p class="text-slate-300">${item.ucapan || '-'}</p>
+              `;
+              container.appendChild(box);
+            });
+          } else {
+            container.innerHTML = `<div class="text-center text-xs text-slate-500 py-2">Belum ada ucapan. Jadilah yang pertama!</div>`;
+          }
+        }
+      } catch (err) {
+        container.innerHTML = `<div class="text-center text-xs text-slate-500 py-2">Gagal memuat ucapan.</div>`;
       }
     }
-  } catch (err) {
-    container.innerHTML = `<div class="text-center text-xs text-slate-500 py-2">Gagal memuat ucapan.</div>`;
-  }
-}
 
-    window.onload = loadWishes;
+    window.onload = function() {
+      loadSettings();
+      loadWishes();
+    };
   </script>
 </body>
 </html>

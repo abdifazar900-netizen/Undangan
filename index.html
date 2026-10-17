@@ -3,353 +3,89 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Management Dashboard - Wedding Undangan Digital</title>
+  <title>Undangan Pernikahan</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    body { background-color: #0f172a; color: #f8fafc; font-family: sans-serif; }
-    .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
-    .tab-btn.active { background-color: #4f46e5; color: #ffffff; }
-  </style>
 </head>
-<body class="p-4 md:p-8 min-h-screen">
+<body class="bg-slate-900 text-white min-h-screen flex items-center justify-center p-4">
 
-  <div class="max-w-7xl mx-auto space-y-6">
-
-    <!-- HEADER & NAVIGATION -->
-    <header class="flex flex-col md:flex-row justify-between items-center gap-4 glass-card p-4 rounded-2xl">
-      <div class="flex items-center gap-3">
-        <div class="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center text-white text-xl font-bold shadow-lg shadow-indigo-500/30">
-          <i class="fa-solid fa-envelope-open-text"></i>
-        </div>
-        <div>
-          <h1 class="text-xl font-bold tracking-wide">INVITASYSTEM <span class="text-indigo-400">PRO</span></h1>
-          <p class="text-xs text-slate-400">Platform Fullstack Undangan Digital & Manager WA</p>
-        </div>
-      </div>
-
-      <nav class="flex items-center gap-2 bg-slate-800/80 p-1.5 rounded-xl border border-slate-700">
-        <button onclick="switchTab('dashboard')" id="btn-dashboard" class="tab-btn active px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2">
-          <i class="fa-solid fa-chart-pie"></i> Dashboard
-        </button>
-        <button onclick="switchTab('demo')" id="btn-demo" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-700/50 transition flex items-center gap-2">
-          <i class="fa-solid fa-mobile-screen-button"></i> Live Demo
-        </button>
-      </nav>
-    </header>
-
-    <!-- DASHBOARD -->
-    <main id="tab-dashboard" class="space-y-6">
-      
-      <!-- STATS -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="glass-card p-5 rounded-2xl flex items-center justify-between">
-          <div>
-            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Tamu</p>
-            <h3 id="stat-total" class="text-2xl font-extrabold text-white mt-1">0</h3>
-          </div>
-          <div class="w-12 h-12 bg-slate-800 text-indigo-400 rounded-xl flex items-center justify-center text-xl">
-            <i class="fa-solid fa-users"></i>
-          </div>
-        </div>
-
-        <div class="glass-card p-5 rounded-2xl flex items-center justify-between">
-          <div>
-            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Sudah Dikirim</p>
-            <h3 id="stat-sent" class="text-2xl font-extrabold text-emerald-400 mt-1">0</h3>
-          </div>
-          <div class="w-12 h-12 bg-emerald-950/40 text-emerald-400 rounded-xl flex items-center justify-center text-xl">
-            <i class="fa-solid fa-paper-plane"></i>
-          </div>
-        </div>
-
-        <div class="glass-card p-5 rounded-2xl flex items-center justify-between">
-          <div>
-            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Belum Dikirim</p>
-            <h3 id="stat-unsent" class="text-2xl font-extrabold text-amber-400 mt-1">0</h3>
-          </div>
-          <div class="w-12 h-12 bg-amber-950/40 text-amber-400 rounded-xl flex items-center justify-center text-xl">
-            <i class="fa-solid fa-clock"></i>
-          </div>
-        </div>
-
-        <div class="glass-card p-5 rounded-2xl flex items-center justify-between">
-          <div>
-            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Konfirmasi RSVP</p>
-            <h3 id="stat-rsvp" class="text-2xl font-extrabold text-teal-400 mt-1">0 Hadir</h3>
-          </div>
-          <div class="w-12 h-12 bg-teal-950/40 text-teal-400 rounded-xl flex items-center justify-center text-xl">
-            <i class="fa-solid fa-clipboard-check"></i>
-          </div>
-        </div>
-      </div>
-
-      <!-- TABLE -->
-      <div class="glass-card rounded-2xl p-6 space-y-4">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div>
-            <h2 class="text-lg font-bold text-white flex items-center gap-2">
-              Daftar Penerima Undangan
-              <span class="text-xs bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2.5 py-0.5 rounded-full">Auto Sync Google Sheets</span>
-            </h2>
-          </div>
-          
-          <div class="flex flex-col sm:flex-row w-full sm:w-auto items-center gap-2">
-            <div class="relative w-full sm:w-64">
-              <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-              <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Cari nama atau grup..." class="w-full bg-slate-900 border border-slate-700 text-slate-200 text-sm rounded-xl pl-9 pr-4 py-2 focus:outline-none focus:border-indigo-500">
-            </div>
-            <button onclick="openModal()" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm px-4 py-2 rounded-xl transition flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 whitespace-nowrap">
-              <i class="fa-solid fa-user-plus"></i> Tambah Tamu
-            </button>
-          </div>
-        </div>
-
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-sm text-slate-300">
-            <thead class="bg-slate-900/60 text-xs text-slate-400 uppercase tracking-wider border-b border-slate-800">
-              <tr>
-                <th class="p-3.5">Nama Tamu</th>
-                <th class="p-3.5">Kategori / Grup</th>
-                <th class="p-3.5">No. WhatsApp</th>
-                <th class="p-3.5">Link Undangan Dinamis</th>
-                <th class="p-3.5">Status Kirim</th>
-                <th class="p-3.5">Status RSVP</th>
-                <th class="p-3.5 text-center">Aksi Kirim</th>
-              </tr>
-            </thead>
-            <tbody id="guestTableBody" class="divide-y divide-slate-800/60">
-              <tr>
-                <td colspan="7" class="text-center py-8 text-slate-500">
-                  <i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengambil data dari Google Sheets...
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </main>
-
-    <!-- LIVE DEMO -->
-    <main id="tab-demo" class="hidden space-y-6">
-      <div class="glass-card rounded-2xl p-6 text-center space-y-4">
-        <h2 class="text-lg font-bold text-white">Preview Undangan Digital</h2>
-        <p class="text-sm text-slate-400 max-w-md mx-auto">Simulasi tampilan nama tamu di website secara langsung.</p>
-        
-        <div class="flex max-w-md mx-auto gap-2">
-          <input type="text" id="demoNameInput" value="Ahmad & Partner" placeholder="Masukkan Nama Tamu..." class="flex-1 bg-slate-900 border border-slate-700 text-slate-200 text-sm rounded-xl px-4 py-2 focus:outline-none focus:border-indigo-500">
-          <button onclick="updateDemoIframe()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm px-4 py-2 rounded-xl transition">Pratinjau</button>
-        </div>
-
-        <div class="mt-6 border-4 border-slate-800 rounded-3xl overflow-hidden max-w-sm mx-auto shadow-2xl h-[600px] bg-slate-900">
-          <iframe id="demoIframe" src="./?to=Ahmad%20%26%20Partner" class="w-full h-full border-none"></iframe>
-        </div>
-      </div>
-    </main>
-
-  </div>
-
-  <!-- MODAL TAMBAH TAMU -->
-  <div id="guestModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="glass-card rounded-2xl max-w-md w-full p-6 space-y-4 border border-slate-700 shadow-2xl relative">
-      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-        <h3 class="text-lg font-bold text-white flex items-center gap-2">
-          <i class="fa-solid fa-user-plus text-indigo-400"></i> Tambah Tamu Baru
-        </h3>
-        <button onclick="closeModal()" class="text-slate-400 hover:text-white p-1">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
-      </div>
-
-      <form id="addGuestForm" onsubmit="submitNewGuest(event)" class="space-y-4">
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Nama Tamu <span class="text-rose-500">*</span></label>
-          <input type="text" id="inputNama" required placeholder="Contoh: Budi Prasetyo & Partner" class="w-full bg-slate-900 border border-slate-700 text-slate-200 text-sm rounded-xl px-4 py-2.5 focus:outline-none focus:border-indigo-500">
-        </div>
-
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">No. WhatsApp</label>
-          <input type="text" id="inputNoWa" placeholder="Contoh: 08123456789 atau 628123456789" class="w-full bg-slate-900 border border-slate-700 text-slate-200 text-sm rounded-xl px-4 py-2.5 focus:outline-none focus:border-indigo-500">
-        </div>
-
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Kategori / Grup</label>
-          <select id="inputKategori" class="w-full bg-slate-900 border border-slate-700 text-slate-200 text-sm rounded-xl px-4 py-2.5 focus:outline-none focus:border-indigo-500">
-            <option value="Umum">Umum</option>
-            <option value="Keluarga">Keluarga</option>
-            <option value="Teman Kantor">Teman Kantor</option>
-            <option value="Sahabat">Sahabat</option>
-            <option value="VIP">VIP</option>
-          </select>
-        </div>
-
-        <div class="flex justify-end gap-2 pt-2 border-t border-slate-800">
-          <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-medium rounded-xl transition">Batal</button>
-          <button type="submit" id="btnSubmitModal" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-xl transition flex items-center gap-2">
-            <span>Simpan Data</span>
-          </button>
-        </div>
-      </form>
+  <div class="max-w-md w-full bg-slate-800 rounded-3xl p-8 text-center space-y-6 border border-slate-700 shadow-2xl">
+    
+    <div class="space-y-2">
+      <p class="text-xs uppercase tracking-widest text-indigo-400 font-semibold">The Wedding Of</p>
+      <h1 class="text-3xl font-serif font-bold text-amber-200">Fazar & Gita</h1>
     </div>
+
+    <!-- AREA NAMA TAMU DINAMIS -->
+    <div class="bg-slate-900/80 p-6 rounded-2xl border border-slate-700 space-y-2">
+      <p class="text-xs text-slate-400">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
+      <h2 id="penerimaTamu" class="text-xl font-bold text-white">Tamu Undangan</h2>
+      <p class="text-xs text-slate-500 italic">Tanpa mengurangi rasa hormat, kami mengundang Anda untuk hadir di acara pernikahan kami.</p>
+    </div>
+
+    <div class="space-y-3 pt-4">
+      <div class="flex items-center justify-center gap-2 text-sm text-slate-300">
+        <i class="fa-regular fa-calendar text-indigo-400"></i>
+        <span>Sabtu, 24 Oktober 2026</span>
+      </div>
+      <div class="flex items-center justify-center gap-2 text-sm text-slate-300">
+        <i class="fa-solid fa-location-dot text-indigo-400"></i>
+        <span>Gedung Pernikahan Utama</span>
+      </div>
+    </div>
+
+    <!-- FORM RSVP UNTUK TAMU -->
+    <form id="rsvpForm" onsubmit="kirimRSVP(event)" class="space-y-3 pt-4 border-t border-slate-700 text-left">
+      <h3 class="text-sm font-semibold text-white">Konfirmasi Kehadiran</h3>
+      
+      <select id="rsvpStatus" class="w-full bg-slate-900 border border-slate-700 text-xs rounded-xl px-3 py-2 text-slate-200">
+        <option value="Hadir">Saya Akan Hadir</option>
+        <option value="Tidak Hadir">Maaf, Tidak Bisa Hadir</option>
+      </select>
+
+      <textarea id="rsvpUcapan" placeholder="Tuliskan ucapan & doa..." class="w-full bg-slate-900 border border-slate-700 text-xs rounded-xl p-3 text-slate-200 h-20"></textarea>
+
+      <button type="submit" id="btnRsvp" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs py-2.5 rounded-xl transition">
+        Kirim Konfirmasi
+      </button>
+    </form>
+
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzil42IARd7zFttb8RtxWEJf7CrcZFtm-hDUJCHPr1GqImwa2Ogb0FqCCs-6gaA4q93Xw/exec"; 
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzil42IARd7zFttb8RtxWEJf7CrcZFtm-hDUJCHPr1GqImwa2Ogb0FqCCs-6gaA4q93Xw/exec";
 
-    function switchTab(tab) {
-      document.getElementById('tab-dashboard').classList.add('hidden');
-      document.getElementById('tab-demo').classList.add('hidden');
-      document.getElementById('btn-dashboard').classList.remove('active');
-      document.getElementById('btn-demo').classList.remove('active');
+    // MENGAMBIL PARAMETER NAMA TAMU DARI URL (?to=)
+    const urlParams = new URLSearchParams(window.location.search);
+    const namaTamu = urlParams.get('to');
 
-      if(tab === 'dashboard') {
-        document.getElementById('tab-dashboard').classList.remove('hidden');
-        document.getElementById('btn-dashboard').classList.add('active');
-      } else if(tab === 'demo') {
-        document.getElementById('tab-demo').classList.remove('hidden');
-        document.getElementById('btn-demo').classList.add('active');
-      }
+    if (namaTamu) {
+      document.getElementById('penerimaTamu').textContent = namaTamu;
     }
 
-    function openModal() {
-      document.getElementById('guestModal').classList.remove('hidden');
-    }
-
-    function closeModal() {
-      document.getElementById('guestModal').classList.add('hidden');
-      document.getElementById('addGuestForm').reset();
-    }
-
-    // Submit Tamu Baru langsung masuk ke Google Sheet
-    async function submitNewGuest(e) {
+    // KIRIM RSVP KE APPS SCRIPT / GOOGLE SHEETS
+    async function kirimRSVP(e) {
       e.preventDefault();
-      const btnSubmit = document.getElementById('btnSubmitModal');
-      const originalText = btnSubmit.innerHTML;
-      
-      btnSubmit.disabled = true;
-      btnSubmit.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...`;
+      const btn = document.getElementById('btnRsvp');
+      btn.disabled = true;
+      btn.textContent = "Sending...";
 
-      const nama = document.getElementById('inputNama').value.trim();
-      const noWa = document.getElementById('inputNoWa').value.trim();
-      const kategori = document.getElementById('inputKategori').value;
+      const status = document.getElementById('rsvpStatus').value;
+      const ucapan = document.getElementById('rsvpUcapan').value;
+      const nama = namaTamu || "Tamu Undangan";
 
       try {
-        const postUrl = `${SCRIPT_URL}?action=addGuest&nama=${encodeURIComponent(nama)}&noWa=${encodeURIComponent(noWa)}&kategori=${encodeURIComponent(kategori)}`;
-        
-        await fetch(postUrl, {
-          method: 'POST',
-          mode: 'no-cors'
-        });
-
-        alert('Data tamu berhasil dikirim ke Google Sheets!');
-        closeModal();
-        setTimeout(fetchGuestData, 2000); 
+        const url = `${SCRIPT_URL}?action=rsvp&nama=${encodeURIComponent(nama)}&status=${encodeURIComponent(status)}&ucapan=${encodeURIComponent(ucapan)}`;
+        await fetch(url, { method: 'POST', mode: 'no-cors' });
+        alert('Terima kasih, konfirmasi Anda berhasil terkirim!');
+        document.getElementById('rsvpForm').reset();
       } catch (err) {
-        console.error("Gagal menambah data:", err);
-        alert('Terjadi kesalahan saat menambahkan data.');
+        alert('Gagal mengirim konfirmasi.');
       } finally {
-        btnSubmit.disabled = false;
-        btnSubmit.innerHTML = originalText;
+        btn.disabled = false;
+        btn.textContent = "Kirim Konfirmasi";
       }
     }
-
-    // Load Data dari Apps Script
-    async function fetchGuestData() {
-      const tableBody = document.getElementById('guestTableBody');
-      try {
-        const response = await fetch(SCRIPT_URL + "?action=getGuests");
-        const json = await response.json();
-
-        if (json.status === "success" && json.data && json.data.length > 0) {
-          renderTable(json.data);
-          updateStats(json.data);
-        } else {
-          tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-500">Belum ada data tamu di Google Sheets. Silakan isi Sheet atau klik Tambah Tamu.</td></tr>`;
-          updateStats([]);
-        }
-      } catch (err) {
-        console.error("Gagal mengambil data real:", err);
-        tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-rose-400">Gagal terhubung ke Google Sheets. Pastikan Web App URL sudah di-deploy ulang.</td></tr>`;
-      }
-    }
-
-    function renderTable(guests) {
-      const tableBody = document.getElementById('guestTableBody');
-      tableBody.innerHTML = '';
-
-      guests.forEach(guest => {
-        const row = document.createElement('tr');
-        row.className = "hover:bg-slate-800/30 transition";
-
-        const isSent = guest.statusKirim && guest.statusKirim.toUpperCase() === 'SUDAH DIKIRIM';
-        const isHadir = guest.statusRsvp && guest.statusRsvp.toUpperCase() === 'HADIR';
-
-        row.innerHTML = `
-          <td class="p-3.5 font-semibold text-white">${guest.nama || '-'}</td>
-          <td class="p-3.5"><span class="bg-slate-800 border border-slate-700 text-xs text-slate-300 px-2.5 py-1 rounded-md">${guest.kategori || 'Umum'}</span></td>
-          <td class="p-3.5 text-slate-400">${guest.noWa || '-'}</td>
-          <td class="p-3.5">
-            <div class="flex items-center gap-1.5">
-              <span class="truncate max-w-[140px] text-xs text-indigo-400 bg-indigo-950/40 px-2 py-1 rounded border border-indigo-800/50">${guest.linkUndangan || '-'}</span>
-              ${guest.linkUndangan ? `<button onclick="copyToClipboard('${guest.linkUndangan}')" class="text-slate-400 hover:text-white p-1" title="Salin Link"><i class="fa-regular fa-copy"></i></button>` : ''}
-            </div>
-          </td>
-          <td class="p-3.5">
-            <span class="text-xs px-2.5 py-1 rounded-md font-medium ${isSent ? 'bg-emerald-950/60 text-emerald-400 border border-emerald-800/50' : 'bg-amber-950/60 text-amber-400 border border-amber-800/50'}">
-              ${guest.statusKirim || 'BELUM DIKIRIM'}
-            </span>
-          </td>
-          <td class="p-3.5">
-            <span class="text-xs px-2.5 py-1 rounded-md font-medium ${isHadir ? 'bg-teal-950/60 text-teal-400 border border-teal-800/50' : 'bg-slate-800 text-slate-400'}">
-              ${guest.statusRsvp || 'Belum Konfirmasi'}
-            </span>
-          </td>
-          <td class="p-3.5 text-center">
-            ${guest.noWa ? `
-              <a href="https://api.whatsapp.com/send?phone=${guest.noWa}&text=${encodeURIComponent(guest.drafPesan || '')}" target="_blank" class="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition">
-                <i class="fa-brands fa-whatsapp"></i> Kirim WA
-              </a>
-            ` : '-'}
-          </td>
-        `;
-        tableBody.appendChild(row);
-      });
-    }
-
-    function updateStats(guests) {
-      const total = guests.length;
-      const sent = guests.filter(g => g.statusKirim && g.statusKirim.toUpperCase() === 'SUDAH DIKIRIM').length;
-      const unsent = total - sent;
-      const rsvpCount = guests.filter(g => g.statusRsvp && g.statusRsvp.toUpperCase() === 'HADIR').length;
-
-      document.getElementById('stat-total').innerText = total;
-      document.getElementById('stat-sent').innerText = sent;
-      document.getElementById('stat-unsent').innerText = unsent;
-      document.getElementById('stat-rsvp').innerText = `${rsvpCount} Hadir`;
-    }
-
-    function filterTable() {
-      const input = document.getElementById("searchInput").value.toLowerCase();
-      const rows = document.querySelectorAll("#guestTableBody tr");
-
-      rows.forEach(row => {
-        const text = row.innerText.toLowerCase();
-        row.style.display = text.includes(input) ? "" : "none";
-      });
-    }
-
-    function copyToClipboard(text) {
-      navigator.clipboard.writeText(text);
-      alert('Link berhasil disalin!');
-    }
-
-    function updateDemoIframe() {
-      const name = document.getElementById('demoNameInput').value;
-      const iframe = document.getElementById('demoIframe');
-      iframe.src = `./?to=${encodeURIComponent(name)}`;
-    }
-
-    window.onload = fetchGuestData;
   </script>
 </body>
 </html>

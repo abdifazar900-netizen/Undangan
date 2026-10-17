@@ -1,696 +1,274 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>InvitaSystem Pro - Fullstack Undangan Digital & Management</title>
+  <title>Management Dashboard-Wedding siapa dan Siapa</title>
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cinzel:wght@500;700&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Plus Jakarta Sans', 'sans-serif'],
-            serif: ['Playfair Display', 'serif'],
-            luxury: ['Cinzel', 'serif']
-          }
-        }
-      }
-    }
-  </script>
   <style>
-    .glass-effect {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-    .custom-scrollbar::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: #f1f5f9;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 4px;
-    }
-    @keyframes pulse-subtle {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.03); }
-    }
-    .animate-pulse-subtle {
-      animation: pulse-subtle 3s infinite ease-in-out;
-    }
+    body { background-color: #0f172a; color: #f8fafc; font-family: sans-serif; }
+    .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .tab-btn.active { background-color: #4f46e5; color: #ffffff; }
   </style>
 </head>
-<body class="bg-slate-900 text-slate-800 min-h-screen font-sans antialiased">
+<body class="p-4 md:p-8 min-h-screen">
 
-  <header class="bg-indigo-950/90 border-b border-indigo-800/50 text-white sticky top-0 z-50 backdrop-blur-md">
-    <div class="max-w-7xl mx-auto px-4 py-3 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
-      <div class="flex items-center space-x-3">
-        <div class="bg-gradient-to-tr from-indigo-600 to-violet-500 p-2.5 rounded-2xl shadow-lg shadow-indigo-500/30">
-          <i class="fa-solid fa-envelope-open-text text-xl text-white"></i>
+  <div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- HEADER & NAVIGATION -->
+    <header class="flex flex-col md:flex-row justify-between items-center gap-4 glass-card p-4 rounded-2xl">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center text-white text-xl font-bold shadow-lg shadow-indigo-500/30">
+          <i class="fa-solid fa-envelope-open-text"></i>
         </div>
         <div>
-          <h1 class="font-bold text-lg leading-tight tracking-wide font-luxury">InvitaSystem <span class="text-indigo-400">Pro</span></h1>
-          <p class="text-[11px] text-indigo-300">Platform Fullstack Undangan Digital & Manager WA</p>
+          <h1 class="text-xl font-bold tracking-wide">INVITASYSTEM <span class="text-indigo-400">PRO</span></h1>
+          <p class="text-xs text-slate-400">Platform Fullstack Undangan Digital & Manager WA</p>
         </div>
       </div>
+
+      <!-- NAV BUTTONS (HANYA DASHBOARD & LIVE DEMO) -->
+      <nav class="flex items-center gap-2 bg-slate-800/80 p-1.5 rounded-xl border border-slate-700">
+        <button onclick="switchTab('dashboard')" id="btn-dashboard" class="tab-btn active px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2">
+          <i class="fa-solid fa-chart-pie"></i> Dashboard
+        </button>
+        <button onclick="switchTab('demo')" id="btn-demo" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-700/50 transition flex items-center gap-2">
+          <i class="fa-solid fa-mobile-screen-button"></i> Live Demo
+        </button>
+      </nav>
+    </header>
+
+    <!-- TAB CONTENT: DASHBOARD -->
+    <main id="tab-dashboard" class="space-y-6">
       
-      <!-- Navigation Tabs -->
-      <div class="flex bg-slate-900/80 p-1.5 rounded-2xl text-xs sm:text-sm border border-indigo-900/60 shadow-inner">
-        <button id="tab-btn-dashboard" onclick="switchTab('dashboard')" class="px-3.5 py-2 rounded-xl font-medium transition-all duration-200 bg-indigo-600 text-white shadow-md">
-          <i class="fa-solid fa-gauge-high mr-1.5"></i>Dashboard
-        </button>
-        <button id="tab-btn-backend" onclick="switchTab('backend')" class="px-3.5 py-2 rounded-xl font-medium transition-all duration-200 text-indigo-300 hover:text-white">
-          <i class="fa-solid fa-code mr-1.5"></i>Kode Backend (GAS)
-        </button>
-        <button id="tab-btn-frontend" onclick="switchTab('frontend')" class="px-3.5 py-2 rounded-xl font-medium transition-all duration-200 text-indigo-300 hover:text-white">
-          <i class="fa-solid fa-laptop-code mr-1.5"></i>Frontend Template
-        </button>
-        <button id="tab-btn-preview" onclick="switchTab('preview')" class="px-3.5 py-2 rounded-xl font-medium transition-all duration-200 text-indigo-300 hover:text-white">
-          <i class="fa-solid fa-mobile-screen-button mr-1.5"></i>Live Demo
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
-    <!-- TAB 1: DASHBOARD MANAGER -->
-    <div id="tab-dashboard" class="space-y-6">
-      
-      <!-- Domain Base URL Settings & Quick Add -->
-      <div class="bg-slate-800/80 p-5 rounded-3xl border border-slate-700/80 shadow-xl backdrop-blur-md flex flex-col lg:flex-row gap-5 justify-between items-center text-slate-100">
-        <div class="w-full lg:w-2/3 space-y-1.5">
-          <label class="block text-xs font-semibold text-indigo-300 uppercase tracking-wider">URL Domain Website Undangan Frontend</label>
-          <div class="flex gap-2">
-            <input type="text" id="baseUrlInput" value="https://undangan-kita.com/manten-bagus-rara" placeholder="https://websiteanda.com/undangan" class="w-full px-4 py-2.5 text-sm bg-slate-900/90 border border-slate-700 text-white rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            <button onclick="updateBaseUrl()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-2xl transition-all shadow-lg shadow-indigo-600/30 whitespace-nowrap">Simpan URL</button>
-          </div>
-        </div>
-        <div class="flex gap-3 w-full lg:w-auto">
-          <button onclick="openAddModal()" class="w-full lg:w-auto px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold text-sm rounded-2xl shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all">
-            <i class="fa-solid fa-user-plus"></i> Tambah Tamu
-          </button>
-          <button onclick="exportCSV()" class="px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 font-semibold text-sm rounded-2xl shadow-md flex items-center justify-center gap-2 transition-all">
-            <i class="fa-solid fa-file-csv"></i> Export CSV
-          </button>
-        </div>
-      </div>
-
-      <!-- Stats Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <div class="bg-slate-800/80 p-5 rounded-3xl border border-slate-700/80 shadow-xl flex items-center gap-4 text-white">
-          <div class="p-3.5 bg-indigo-500/20 text-indigo-400 rounded-2xl text-2xl border border-indigo-500/30">
-            <i class="fa-solid fa-users"></i>
-          </div>
+      <!-- STATS CARDS -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="glass-card p-5 rounded-2xl flex items-center justify-between">
           <div>
             <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Tamu</p>
-            <h3 id="statTotal" class="text-2xl font-bold text-white">0</h3>
+            <h3 id="stat-total" class="text-2xl font-extrabold text-white mt-1">0</h3>
+          </div>
+          <div class="w-12 h-12 bg-slate-800 text-indigo-400 rounded-xl flex items-center justify-center text-xl">
+            <i class="fa-solid fa-users"></i>
           </div>
         </div>
-        <div class="bg-slate-800/80 p-5 rounded-3xl border border-slate-700/80 shadow-xl flex items-center gap-4 text-white">
-          <div class="p-3.5 bg-emerald-500/20 text-emerald-400 rounded-2xl text-2xl border border-emerald-500/30">
-            <i class="fa-solid fa-paper-plane"></i>
-          </div>
+
+        <div class="glass-card p-5 rounded-2xl flex items-center justify-between">
           <div>
             <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Sudah Dikirim</p>
-            <h3 id="statSent" class="text-2xl font-bold text-white">0</h3>
+            <h3 id="stat-sent" class="text-2xl font-extrabold text-emerald-400 mt-1">0</h3>
+          </div>
+          <div class="w-12 h-12 bg-emerald-950/40 text-emerald-400 rounded-xl flex items-center justify-center text-xl">
+            <i class="fa-solid fa-paper-plane"></i>
           </div>
         </div>
-        <div class="bg-slate-800/80 p-5 rounded-3xl border border-slate-700/80 shadow-xl flex items-center gap-4 text-white">
-          <div class="p-3.5 bg-amber-500/20 text-amber-400 rounded-2xl text-2xl border border-amber-500/30">
-            <i class="fa-solid fa-clock"></i>
-          </div>
+
+        <div class="glass-card p-5 rounded-2xl flex items-center justify-between">
           <div>
             <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Belum Dikirim</p>
-            <h3 id="statPending" class="text-2xl font-bold text-white">0</h3>
+            <h3 id="stat-unsent" class="text-2xl font-extrabold text-amber-400 mt-1">0</h3>
+          </div>
+          <div class="w-12 h-12 bg-amber-950/40 text-amber-400 rounded-xl flex items-center justify-center text-xl">
+            <i class="fa-solid fa-clock"></i>
           </div>
         </div>
-        <div class="bg-slate-800/80 p-5 rounded-3xl border border-slate-700/80 shadow-xl flex items-center gap-4 text-white">
-          <div class="p-3.5 bg-teal-500/20 text-teal-400 rounded-2xl text-2xl border border-teal-500/30">
-            <i class="fa-solid fa-clipboard-check"></i>
-          </div>
+
+        <div class="glass-card p-5 rounded-2xl flex items-center justify-between">
           <div>
             <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Konfirmasi RSVP</p>
-            <h3 id="statRsvp" class="text-2xl font-bold text-white">0 Hadir</h3>
+            <h3 id="stat-rsvp" class="text-2xl font-extrabold text-teal-400 mt-1">0 Hadir</h3>
+          </div>
+          <div class="w-12 h-12 bg-teal-950/40 text-teal-400 rounded-xl flex items-center justify-center text-xl">
+            <i class="fa-solid fa-clipboard-check"></i>
           </div>
         </div>
       </div>
 
-      <!-- Main Data Table -->
-      <div class="bg-slate-800/80 rounded-3xl shadow-xl border border-slate-700/80 overflow-hidden backdrop-blur-md">
-        <div class="p-5 border-b border-slate-700/80 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div class="flex items-center gap-3">
-            <h2 class="font-bold text-lg text-white">Daftar Penerima Undangan</h2>
-            <span class="px-3 py-1 bg-indigo-900/60 text-indigo-300 rounded-full text-xs font-semibold border border-indigo-700/50">Auto Sync Google Sheets</span>
+      <!-- MAIN TABLE SECTION -->
+      <div class="glass-card rounded-2xl p-6 space-y-4">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">
+              Daftar Penerima Undangan
+              <span class="text-xs bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2.5 py-0.5 rounded-full">Auto Sync Google Sheets</span>
+            </h2>
           </div>
           <div class="relative w-full sm:w-72">
-            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-sm"></i>
-            <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Cari nama atau grup..." class="w-full pl-10 pr-4 py-2 bg-slate-900/90 text-sm border border-slate-700 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+            <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Cari nama atau grup..." class="w-full bg-slate-900 border border-slate-700 text-slate-200 text-sm rounded-xl pl-9 pr-4 py-2 focus:outline-none focus:border-indigo-500">
           </div>
         </div>
 
-        <div class="overflow-x-auto custom-scrollbar">
-          <table class="w-full text-left text-sm text-slate-300" id="guestTable">
-            <thead class="bg-slate-900/90 text-slate-400 text-xs uppercase font-semibold border-b border-slate-700">
+        <!-- TABLE -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm text-slate-300">
+            <thead class="bg-slate-900/60 text-xs text-slate-400 uppercase tracking-wider border-b border-slate-800">
               <tr>
-                <th class="px-6 py-4">Nama Tamu</th>
-                <th class="px-6 py-4">Kategori / Grup</th>
-                <th class="px-6 py-4">No. WhatsApp</th>
-                <th class="px-6 py-4">Link Undangan Dinamis</th>
-                <th class="px-6 py-4">Status Kirim</th>
-                <th class="px-6 py-4">Status RSVP</th>
-                <th class="px-6 py-4 text-center">Aksi Kirim</th>
+                <th class="p-3.5">Nama Tamu</th>
+                <th class="p-3.5">Kategori / Grup</th>
+                <th class="p-3.5">No. WhatsApp</th>
+                <th class="p-3.5">Link Undangan Dinamis</th>
+                <th class="p-3.5">Status Kirim</th>
+                <th class="p-3.5">Status RSVP</th>
+                <th class="p-3.5 text-center">Aksi Kirim</th>
               </tr>
             </thead>
-            <tbody id="guestTableBody" class="divide-y divide-slate-700/60">
-              <!-- Rows inserted dynamically -->
+            <tbody id="guestTableBody" class="divide-y divide-slate-800/60">
+              <tr>
+                <td colspan="7" class="text-center py-8 text-slate-500">
+                  <i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengambil data dari Google Sheets...
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
       </div>
-    </div>
+    </main>
 
-    <!-- TAB 2: BACKEND CODE (GAS) -->
-    <div id="tab-backend" class="hidden space-y-6">
-      <div class="bg-slate-800/80 p-6 rounded-3xl shadow-xl border border-slate-700/80 backdrop-blur-md">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-700 pb-4 mb-5 gap-4">
-          <div>
-            <h2 class="text-xl font-bold text-white flex items-center gap-2">
-              <i class="fa-solid fa-gears text-indigo-400"></i> Backend Google Apps Script (GAS Engine)
-            </h2>
-            <p class="text-xs text-slate-400 mt-1">Kode ini menangani pembuatan database di Google Sheets, pengiriman WA, dan penampung data RSVP otomatis (DoPost Webhook).</p>
-          </div>
-          <button onclick="copyCode('gasCodeBlock')" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-2xl text-xs font-semibold flex items-center gap-2 shadow-lg shadow-indigo-600/30 transition-all">
-            <i class="fa-solid fa-copy"></i> Salin Kode Backend GAS
-          </button>
+    <!-- TAB CONTENT: LIVE DEMO -->
+    <main id="tab-demo" class="hidden space-y-6">
+      <div class="glass-card rounded-2xl p-6 text-center space-y-4">
+        <h2 class="text-lg font-bold text-white">Preview Undangan Digital</h2>
+        <p class="text-sm text-slate-400 max-w-md mx-auto">Gunakan simulasi parameter di bawah untuk melihat tampilan nama tamu di website secara langsung.</p>
+        
+        <div class="flex max-w-md mx-auto gap-2">
+          <input type="text" id="demoNameInput" value="Ahmad & Partner" placeholder="Masukkan Nama Tamu..." class="flex-1 bg-slate-900 border border-slate-700 text-slate-200 text-sm rounded-xl px-4 py-2 focus:outline-none focus:border-indigo-500">
+          <button onclick="updateDemoIframe()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm px-4 py-2 rounded-xl transition">Pratinjau</button>
         </div>
 
-        <!-- Setup steps -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div class="p-4 bg-slate-900/80 rounded-2xl border border-slate-700/70">
-            <div class="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-xs mb-3 shadow-md shadow-indigo-600/30">1</div>
-            <h4 class="font-bold text-white text-sm">Buat Google Sheets</h4>
-            <p class="text-xs text-slate-400 mt-1">Buka Google Sheets baru di Google Drive Anda.</p>
-          </div>
-          <div class="p-4 bg-slate-900/80 rounded-2xl border border-slate-700/70">
-            <div class="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-xs mb-3 shadow-md shadow-indigo-600/30">2</div>
-            <h4 class="font-bold text-white text-sm">Tempel Kode Ke Apps Script</h4>
-            <p class="text-xs text-slate-400 mt-1">Klik <b>Ekstensi</b> &gt; <b>Apps Script</b>. Paste seluruh kode di bawah ini.</p>
-          </div>
-          <div class="p-4 bg-slate-900/80 rounded-2xl border border-slate-700/70">
-            <div class="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-xs mb-3 shadow-md shadow-indigo-600/30">3</div>
-            <h4 class="font-bold text-white text-sm">Jalankan Setup Database</h4>
-            <p class="text-xs text-slate-400 mt-1">Pilih fungsi <code>setupDatabaseSheet</code> lalu klik <b>Run</b> untuk membuat struktur kolom & menu otomatis.</p>
-          </div>
-        </div>
-
-        <pre class="bg-slate-950 text-emerald-400 p-5 rounded-2xl font-mono text-xs overflow-x-auto leading-relaxed border border-slate-800 custom-scrollbar shadow-inner" id="gasCodeBlock">
-/**
- * ==============================================================================
- * INVITASYSTEM PRO - BACKEND ENGINE (GOOGLE APPS SCRIPT)
- * ==============================================================================
- * Fitur: 
- * 1. Auto Database Setup & Menu Custom di Google Sheets
- * 2. Auto Dynamic URL & WhatsApp Message Formula
- * 3. Kirim WA Langsung via Cell Selection
- * 4. Webhook Web App Endpoint (doPost) untuk Penampungan Form RSVP
- */
-
-// URL UTAMA DOMAIN WEBSITE UNDANGAN DIGITAL ANDA
-var BASE_URL_UNDANGAN = "https://undangan-kita.com/manten-bagus-rara";
-
-/**
- * 1. MEMBUAT MENU KUSTOM DI GOOGLE SHEETS
- */
-function onOpen() {
-  var ui = SpreadsheetApp.getUi();
-  ui.createMenu('💌 Kirim Undangan Pro')
-    .addItem('🚀 Kirim WA Tamu (Baris Dipilih)', 'kirimWAPilihan')
-    .addSeparator()
-    .addItem('⚙️ Initial Setup Database Sheet', 'setupDatabaseSheet')
-    .addToUi();
-}
-
-/**
- * 2. FUNSI SETUP OTOMATIS STRUKTUR DATABASE
- */
-function setupDatabaseSheet() {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = ss.getActiveSheet();
-  sheet.setName("Daftar Tamu");
-
-  // Header Utama
-  var headers = [["Nama Tamu", "No WhatsApp", "Kategori", "Link Undangan Dinamis", "Draf Pesan WA", "Status Kirim", "RSVP Konfirmasi", "Ucapan & Doa"]];
-  sheet.getRange(1, 1, 1, 8).setValues(headers);
-  
-  // Style Header
-  var headerRange = sheet.getRange(1, 1, 1, 8);
-  headerRange.setFontWeight("bold")
-             .setBackground("#312e81")
-             .setFontColor("#ffffff")
-             .setVerticalAlignment("middle")
-             .setHorizontalAlignment("center");
-  sheet.setRowHeight(1, 35);
-
-  // Set Formula Otomatis Baris 2 sampai 100
-  for (var i = 2; i <= 100; i++) {
-    sheet.getRange(i, 4).setFormula('=IF(A' + i + '<>""; "' + BASE_URL_UNDANGAN + '?to=" & ENCODEURL(A' + i + '); "")');
-    sheet.getRange(i, 5).setFormula('=IF(A' + i + '<>""; "Kepada Yth. " & A' + i + ' & "%0A%0ATanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu/Saudara/i untuk hadir di acara pernikahan kami.%0A%0ADetail Undangan:%0A" & D' + i + ' & "%0A%0ATerima Kasih."; "")');
-  }
-
-  // Set Auto Column Widths
-  sheet.setColumnWidth(1, 200); // Nama
-  sheet.setColumnWidth(2, 140); // WA
-  sheet.setColumnWidth(3, 120); // Kategori
-  sheet.setColumnWidth(4, 300); // Link
-  sheet.setColumnWidth(5, 300); // Pesan
-  sheet.setColumnWidth(6, 130); // Status
-  sheet.setColumnWidth(7, 140); // RSVP
-  sheet.setColumnWidth(8, 250); // Ucapan
-
-  SpreadsheetApp.getUi().alert("✅ Database Spreadsheet Berhasil Disiapkan!");
-}
-
-/**
- * 3. FUNGSI KLIK KIRIM WA DARI GOOGLE SHEETS
- */
-function kirimWAPilihan() {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  var cell = sheet.getActiveCell();
-  var row = cell.getRow();
-  
-  if (row < 2) {
-    SpreadsheetApp.getUi().alert("⚠️ Silakan pilih baris data tamu (bukan baris header)!");
-    return;
-  }
-  
-  var nama = sheet.getRange(row, 1).getValue();
-  var noHp = sheet.getRange(row, 2).getValue();
-  var pesan = sheet.getRange(row, 5).getValue();
-  
-  if (!nama || !noHp) {
-    SpreadsheetApp.getUi().alert("⚠️ Nama Tamu dan Nomor WhatsApp harus diisi!");
-    return;
-  }
-  
-  // Clean & Format Nomor HP ke Kode Negara (62)
-  noHp = String(noHp).replace(/[^0-9]/g, '');
-  if (noHp.startsWith("0")) {
-    noHp = "62" + noHp.substring(1);
-  }
-  
-  var waUrl = "https://api.whatsapp.com/send?phone=" + noHp + "&text=" + pesan;
-  
-  // Update Status Kirim di Spreadsheet
-  sheet.getRange(row, 6).setValue("SUDAH DIKIRIM")
-                        .setBackground("#d1fae5")
-                        .setFontColor("#065f46")
-                        .setFontWeight("bold");
-  
-  // Buka Tab WhatsApp Web
-  var html = '&lt;script&gt;window.open("' + waUrl + '", "_blank");google.script.host.close();&lt;/script&gt;';
-  var userInterface = HtmlService.createHtmlOutput(html).setHeight(50).setWidth(200);
-  SpreadsheetApp.getUi().showModalDialog(userInterface, 'Membuka WhatsApp...');
-}
-
-/**
- * 4. WEBHOOK API ENDPOINT (Menerima RSVP dari Website Frontend)
- */
-function doPost(e) {
-  try {
-    var data = JSON.parse(e.postData.contents);
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    var lastRow = sheet.getLastRow();
-    var dataRange = sheet.getRange(2, 1, lastRow, 8).getValues();
-    
-    var guestFound = false;
-    
-    // Cari nama tamu di kolom A dan update RSVP
-    for (var i = 0; i < dataRange.length; i++) {
-      if (dataRange[i][0].toLowerCase() === data.nama.toLowerCase()) {
-        var targetRow = i + 2;
-        sheet.getRange(targetRow, 7).setValue(data.statusRsvp); // Kolom G
-        sheet.getRange(targetRow, 8).setValue(data.ucapan);    // Kolom H
-        guestFound = true;
-        break;
-      }
-    }
-    
-    // Jika tamu tidak terdaftar sebelumnya, tambahkan di baris baru
-    if (!guestFound) {
-      sheet.appendRow([data.nama, "-", "Umum / RSVP Web", "", "", "N/A", data.statusRsvp, data.ucapan]);
-    }
-    
-    return ContentService.createTextOutput(JSON.stringify({ "result": "success" }))
-      .setMimeType(ContentService.MimeType.JSON);
-      
-  } catch (error) {
-    return ContentService.createTextOutput(JSON.stringify({ "result": "error", "message": error.toString() }))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-}
-          </pre>
-      </div>
-    </div>
-
-    <!-- TAB 3: FRONTEND WEBSITE TEMPLATE -->
-    <div id="tab-frontend" class="hidden space-y-6">
-      <div class="bg-slate-800/80 p-6 rounded-3xl shadow-xl border border-slate-700/80 backdrop-blur-md">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-700 pb-4 mb-5 gap-4">
-          <div>
-            <h2 class="text-xl font-bold text-white flex items-center gap-2">
-              <i class="fa-solid fa-code text-teal-400"></i> Frontend Script (Website Undangan Client)
-            </h2>
-            <p class="text-xs text-slate-400 mt-1">Salin kode HTML/JS ini dan gunakan sebagai file <code>index.html</code> pada hosting/domain website pernikahan Anda.</p>
-          </div>
-          <button onclick="copyCode('frontendCodeBlock')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl text-xs font-semibold flex items-center gap-2 shadow-lg shadow-emerald-600/30 transition-all">
-            <i class="fa-solid fa-copy"></i> Salin Kode Frontend HTML
-          </button>
-        </div>
-
-        <pre class="bg-slate-950 text-sky-300 p-5 rounded-2xl font-mono text-xs overflow-x-auto leading-relaxed border border-slate-800 custom-scrollbar shadow-inner" id="frontendCodeBlock">
-&lt;!DOCTYPE html&gt;
-&lt;html lang="id"&gt;
-&lt;head&gt;
-  &lt;meta charset="UTF-8"&gt;
-  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-  &lt;title&gt;Undangan Pernikahan Bagus &amp; Rara&lt;/title&gt;
-  &lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;
-  &lt;link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&amp;family=Plus+Jakarta+Sans:wght@300;400;600&amp;display=swap" rel="stylesheet"&gt;
-  &lt;style&gt;
-    body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    .font-serif-custom { font-family: 'Playfair Display', serif; }
-  &lt;/style&gt;
-&lt;/head&gt;
-&lt;body class="bg-amber-50/30 text-slate-800 min-h-screen flex flex-col items-center justify-center p-4"&gt;
-
-  &lt;!-- COVER / UNLOCK CARD --&gt;
-  &lt;div class="max-w-md w-full bg-white/90 backdrop-blur-md rounded-3xl border border-amber-200/80 p-8 shadow-2xl text-center space-y-6"&gt;
-    &lt;span class="text-amber-800 uppercase text-xs tracking-widest font-semibold"&gt;The Wedding Of&lt;/span&gt;
-    &lt;h1 class="text-4xl font-serif-custom text-slate-900 font-bold"&gt;Bagus &amp; Rara&lt;/h1&gt;
-    &lt;p class="text-xs text-slate-500 font-medium"&gt;Sabtu, 24 Oktober 2026&lt;/p&gt;
-
-    &lt;!-- ELEMENT UNTUK MEMBACA NAMA TAMU DARI URL PARAMETER --&gt;
-    &lt;div class="py-6 px-4 bg-amber-100/40 rounded-2xl border border-amber-200/60"&gt;
-      &lt;p class="text-xs text-slate-500 mb-2"&gt;Kepada Yth. Bapak/Ibu/Saudara/i:&lt;/p&gt;
-      &lt;h2 id="guest-name-display" class="text-xl font-bold text-slate-900 font-serif-custom"&gt;Tamu Undangan&lt;/h2&gt;
-      &lt;span class="inline-block mt-3 text-[10px] bg-amber-200/60 text-amber-900 px-3 py-1 rounded-full font-semibold"&gt;Di Tempat&lt;/span&gt;
-    &lt;/div&gt;
-
-    &lt;button onclick="bukaUndangan()" class="w-full py-3.5 bg-slate-900 text-white rounded-xl text-xs font-semibold shadow-lg hover:bg-slate-800 transition-all"&gt;
-      💌 Buka Undangan
-    &lt;/button&gt;
-  &lt;/div&gt;
-
-  &lt;!-- JAVASCRIPT UNTUK MEMBACA ?to= DARI URL --&gt;
-  &lt;script&gt;
-    document.addEventListener("DOMContentLoaded", function () {
-      // 1. Ambil URL Parameters
-      const urlParams = new URLSearchParams(window.location.search);
-      const namaTamu = urlParams.get('to');
-
-      // 2. Tampilkan Nama ke Element HTML jika parameter ada
-      if (namaTamu) {
-        document.getElementById('guest-name-display').textContent = namaTamu;
-      }
-    });
-
-    function bukaUndangan() {
-      alert("Undangan Berhasil Dibuka!");
-      // Tambahkan logic animasi scroll ke section isi acara di sini
-    }
-  &lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-          </pre>
-      </div>
-    </div>
-
-    <!-- TAB 4: LIVE DEMO & PREVIEW -->
-    <div id="tab-preview" class="hidden space-y-6">
-      <div class="bg-slate-800/80 p-6 rounded-3xl shadow-xl border border-slate-700/80 backdrop-blur-md">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-slate-700">
-          <div>
-            <h2 class="text-xl font-bold text-white">Simulasi Interaktif Landing Page Website Undangan</h2>
-            <p class="text-xs text-slate-400">Uji coba dinamis pengubah nama tamu via parameter URL secara langsung.</p>
-          </div>
-          <div class="flex items-center gap-2 bg-slate-900 p-2 rounded-2xl border border-slate-700 w-full sm:w-auto">
-            <span class="text-xs text-indigo-300 font-mono px-2">?to=</span>
-            <input type="text" id="demoUrlParam" value="Budi Prasetyo & Partner" class="bg-slate-800 text-white border border-slate-700 px-3 py-1.5 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full sm:w-48">
-            <button onclick="renderPreview()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap">Test Name</button>
-          </div>
-        </div>
-
-        <!-- Simulated Mobile Frame -->
-        <div class="max-w-md mx-auto bg-amber-50/90 border-[10px] border-slate-900 rounded-[3rem] shadow-2xl overflow-hidden min-h-[600px] flex flex-col justify-between relative text-center p-8 border-slate-950">
-          <div class="space-y-4 my-auto">
-            <div class="w-16 h-1 bg-slate-300 rounded-full mx-auto mb-6"></div>
-            <span class="text-amber-900 uppercase text-xs tracking-widest font-semibold font-luxury">The Wedding Of</span>
-            <h1 class="text-3xl font-serif text-slate-900 font-bold">Bagus & Rara</h1>
-            <p class="text-xs text-slate-500 font-medium">Sabtu, 24 Oktober 2026</p>
-            
-            <div class="my-6 py-6 px-4 bg-white/80 backdrop-blur-sm rounded-2xl border border-amber-200/80 shadow-md">
-              <p class="text-xs text-slate-500 mb-2">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
-              <h2 id="previewGuestName" class="text-xl font-bold text-indigo-950 font-serif">Budi Prasetyo & Partner</h2>
-              <span class="inline-block mt-3 text-[10px] bg-amber-100 text-amber-800 px-3 py-1 rounded-full font-semibold border border-amber-200">Di Tempat</span>
-            </div>
-
-            <button onclick="alert('Simulasi muka undangan sukses!')" class="w-full py-3.5 bg-slate-900 text-white rounded-2xl text-xs font-semibold shadow-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-2">
-              <i class="fa-solid fa-envelope-open text-amber-300"></i> Buka Undangan Digital
-            </button>
-          </div>
-
-          <div class="text-[11px] text-slate-400 mt-4">
-            <i class="fa-solid fa-info-circle text-indigo-500 mr-1"></i>Nama tamu berubah otomatis membaca string dari URL.
-          </div>
+        <div class="mt-6 border-4 border-slate-800 rounded-3xl overflow-hidden max-w-sm mx-auto shadow-2xl h-[600px] bg-slate-900">
+          <iframe id="demoIframe" src="./?to=Ahmad%20%26%20Partner" class="w-full h-full border-none"></iframe>
         </div>
       </div>
-    </div>
+    </main>
 
-  </main>
-
-  <!-- MODAL ADD GUEST -->
-  <div id="addModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
-    <div class="bg-slate-800 border border-slate-700 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 text-slate-200">
-      <div class="flex justify-between items-center border-b border-slate-700 pb-3">
-        <h3 class="font-bold text-white text-base">Tambah Tamu Undangan Baru</h3>
-        <button onclick="closeAddModal()" class="text-slate-400 hover:text-white transition-all"><i class="fa-solid fa-xmark text-lg"></i></button>
-      </div>
-
-      <div class="space-y-3 text-xs">
-        <div>
-          <label class="block font-semibold text-slate-300 mb-1">Nama Tamu / Pasangan</label>
-          <input type="text" id="modalNama" placeholder="Contoh: Budi Prasetyo & Partner" class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
-        </div>
-        <div>
-          <label class="block font-semibold text-slate-300 mb-1">Nomor WhatsApp</label>
-          <input type="text" id="modalWA" placeholder="Contoh: 08123456789" class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
-        </div>
-        <div>
-          <label class="block font-semibold text-slate-300 mb-1">Kategori / Grup</label>
-          <select id="modalKategori" class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            <option value="Keluarga">Keluarga</option>
-            <option value="Teman Kantor">Teman Kantor</option>
-            <option value="Sahabat SMA">Sahabat SMA</option>
-            <option value="VIP">VIP</option>
-            <option value="Umum">Umum</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="flex gap-2 pt-2">
-        <button onclick="closeAddModal()" class="w-1/2 py-2.5 border border-slate-700 text-slate-300 rounded-xl text-xs font-semibold hover:bg-slate-700">Batal</button>
-        <button onclick="saveGuest()" class="w-1/2 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold shadow-lg shadow-indigo-600/30">Simpan & Generate Link</button>
-      </div>
-    </div>
   </div>
 
   <script>
-    // State initial data
-    let baseUrl = "https://undangan-kita.com/manten-bagus-rara";
-    let guests = [
-      { id: 1, nama: "Budi Prasetyo & Partner", wa: "6281234567890", kategori: "Keluarga", status: "SUDAH DIKIRIM", rsvp: "Hadir" },
-      { id: 2, nama: "Siti Rahmawati", wa: "6289876543210", kategori: "Teman Kantor", status: "BELUM DIKIRIM", rsvp: "Belum Konfirmasi" },
-      { id: 3, nama: "Dr. Hendra & Istri", wa: "6285512345678", kategori: "VIP", status: "BELUM DIKIRIM", rsvp: "Hadir" }
-    ];
+    // URL Deployment Web App Apps Script Anda
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwcQ5Q1rTmsz-f5z_EXAMPLE/exec"; 
 
-    // Initialize App
-    document.addEventListener("DOMContentLoaded", () => {
-      renderTable();
-      updateStats();
-    });
+    // Ganti Tab Menu
+    function switchTab(tab) {
+      document.getElementById('tab-dashboard').classList.add('hidden');
+      document.getElementById('tab-demo').classList.add('hidden');
+      document.getElementById('btn-dashboard').classList.remove('active');
+      document.getElementById('btn-demo').classList.remove('active');
 
-    // Tab Switcher Logic
-    function switchTab(tabName) {
-      const tabs = ['dashboard', 'backend', 'frontend', 'preview'];
-      tabs.forEach(tab => {
-        document.getElementById(`tab-${tab}`).classList.add('hidden');
-        const btn = document.getElementById(`tab-btn-${tab}`);
-        btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-md');
-        btn.classList.add('text-indigo-300');
-      });
-
-      document.getElementById(`tab-${tabName}`).classList.remove('hidden');
-      const activeBtn = document.getElementById(`tab-btn-${tabName}`);
-      activeBtn.classList.add('bg-indigo-600', 'text-white', 'shadow-md');
-      activeBtn.classList.remove('text-indigo-300');
+      if(tab === 'dashboard') {
+        document.getElementById('tab-dashboard').classList.remove('hidden');
+        document.getElementById('btn-dashboard').classList.add('active');
+      } else if(tab === 'demo') {
+        document.getElementById('tab-demo').classList.remove('hidden');
+        document.getElementById('btn-demo').classList.add('active');
+      }
     }
 
-    // Render Data Table
-    function renderTable() {
-      const tbody = document.getElementById("guestTableBody");
-      tbody.innerHTML = "";
+    // Load Data Real dari Apps Script
+    async function fetchGuestData() {
+      const tableBody = document.getElementById('guestTableBody');
+      try {
+        const response = await fetch(SCRIPT_URL + "?action=getGuests");
+        const json = await response.json();
+
+        if (json.status === "success" && json.data.length > 0) {
+          renderTable(json.data);
+          updateStats(json.data);
+        } else {
+          tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-500">Belum ada data tamu di Google Sheets. Silakan isi Sheet terlebih dahulu.</td></tr>`;
+        }
+      } catch (err) {
+        console.error("Gagal mengambil data real:", err);
+        tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-rose-400">Gagal terhubung ke Google Sheets. Pastikan Web App URL sudah benar & di-deploy dengan akses "Anyone".</td></tr>`;
+      }
+    }
+
+    // Render Data ke Tabel
+    function renderTable(guests) {
+      const tableBody = document.getElementById('guestTableBody');
+      tableBody.innerHTML = '';
 
       guests.forEach(guest => {
-        const generatedUrl = `${baseUrl}?to=${encodeURIComponent(guest.nama)}`;
-        const waMessage = `Kepada Yth. ${guest.nama}%0A%0ATanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu/Saudara/i untuk hadir di acara pernikahan kami.%0A%0ADetail Undangan:%0A${encodeURIComponent(generatedUrl)}%0A%0ATerima Kasih.`;
-        const waLink = `https://api.whatsapp.com/send?phone=${guest.wa}&text=${waMessage}`;
+        const row = document.createElement('tr');
+        row.className = "hover:bg-slate-800/30 transition";
 
-        const tr = document.createElement("tr");
-        tr.className = "hover:bg-slate-700/40 transition-all border-b border-slate-700/40";
-        tr.innerHTML = `
-          <td class="px-6 py-4 font-semibold text-white">${guest.nama}</td>
-          <td class="px-6 py-4"><span class="px-2.5 py-1 bg-slate-900 text-indigo-300 border border-slate-700 rounded-lg text-xs font-medium">${guest.kategori}</span></td>
-          <td class="px-6 py-4 text-xs font-mono text-slate-300">+${guest.wa}</td>
-          <td class="px-6 py-4">
-            <div class="flex items-center gap-1.5 max-w-xs">
-              <input type="text" readonly value="${generatedUrl}" class="w-full text-xs bg-slate-900 border border-slate-700 px-2.5 py-1 rounded-lg text-slate-400 font-mono truncate">
-              <button onclick="copyToClipboard('${generatedUrl}')" title="Copy Link" class="p-1.5 text-slate-400 hover:text-indigo-400 rounded transition-all">
-                <i class="fa-solid fa-copy"></i>
-              </button>
+        const isSent = guest.statusKirim && guest.statusKirim.toUpperCase() === 'SUDAH DIKIRIM';
+        const isHadir = guest.statusRsvp && guest.statusRsvp.toUpperCase() === 'HADIR';
+
+        row.innerHTML = `
+          <td class="p-3.5 font-semibold text-white">${guest.nama || '-'}</td>
+          <td class="p-3.5"><span class="bg-slate-800 border border-slate-700 text-xs text-slate-300 px-2.5 py-1 rounded-md">${guest.kategori || 'Umum'}</span></td>
+          <td class="p-3.5 text-slate-400">${guest.noWa || '-'}</td>
+          <td class="p-3.5">
+            <div class="flex items-center gap-1.5">
+              <span class="truncate max-w-[140px] text-xs text-indigo-400 bg-indigo-950/40 px-2 py-1 rounded border border-indigo-800/50">${guest.linkUndangan || '-'}</span>
+              ${guest.linkUndangan ? `<button onclick="copyToClipboard('${guest.linkUndangan}')" class="text-slate-400 hover:text-white p-1" title="Salin Link"><i class="fa-regular fa-copy"></i></button>` : ''}
             </div>
           </td>
-          <td class="px-6 py-4">
-            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${guest.status === 'SUDAH DIKIRIM' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'}">
-              ${guest.status}
+          <td class="p-3.5">
+            <span class="text-xs px-2.5 py-1 rounded-md font-medium ${isSent ? 'bg-emerald-950/60 text-emerald-400 border border-emerald-800/50' : 'bg-amber-950/60 text-amber-400 border border-amber-800/50'}">
+              ${guest.statusKirim || 'BELUM DIKIRIM'}
             </span>
           </td>
-          <td class="px-6 py-4">
-            <span class="text-xs font-medium ${guest.rsvp === 'Hadir' ? 'text-teal-400' : 'text-slate-400'}">
-              <i class="fa-solid ${guest.rsvp === 'Hadir' ? 'fa-circle-check' : 'fa-circle-dot'} mr-1"></i>${guest.rsvp}
+          <td class="p-3.5">
+            <span class="text-xs px-2.5 py-1 rounded-md font-medium ${isHadir ? 'bg-teal-950/60 text-teal-400 border border-teal-800/50' : 'bg-slate-800 text-slate-400'}">
+              ${guest.statusRsvp || 'Belum Konfirmasi'}
             </span>
           </td>
-          <td class="px-6 py-4 text-center">
-            <a href="${waLink}" target="_blank" onclick="markAsSent(${guest.id})" class="inline-flex items-center justify-center px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold gap-1.5 shadow-md shadow-emerald-600/30 transition-all">
-              <i class="fa-brands fa-whatsapp text-sm"></i> Kirim WA
-            </a>
+          <td class="p-3.5 text-center">
+            ${guest.noWa ? `
+              <a href="https://api.whatsapp.com/send?phone=${guest.noWa}&text=${encodeURIComponent(guest.drafPesan || '')}" target="_blank" class="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition">
+                <i class="fa-brands fa-whatsapp"></i> Kirim WA
+              </a>
+            ` : '-'}
           </td>
         `;
-        tbody.appendChild(tr);
+        tableBody.appendChild(row);
       });
     }
 
-    // Update Dashboard Metrics
-    function updateStats() {
-      document.getElementById("statTotal").textContent = guests.length;
-      document.getElementById("statSent").textContent = guests.filter(g => g.status === 'SUDAH DIKIRIM').length;
-      document.getElementById("statPending").textContent = guests.filter(g => g.status === 'BELUM DIKIRIM').length;
-      document.getElementById("statRsvp").textContent = `${guests.filter(g => g.rsvp === 'Hadir').length} Hadir`;
+    // Update Angka Statistik Header
+    function updateStats(guests) {
+      const total = guests.length;
+      const sent = guests.filter(g => g.statusKirim && g.statusKirim.toUpperCase() === 'SUDAH DIKIRIM').length;
+      const unsent = total - sent;
+      const rsvpCount = guests.filter(g => g.statusRsvp && g.statusRsvp.toUpperCase() === 'HADIR').length;
+
+      document.getElementById('stat-total').innerText = total;
+      document.getElementById('stat-sent').innerText = sent;
+      document.getElementById('stat-unsent').innerText = unsent;
+      document.getElementById('stat-rsvp').innerText = `${rsvpCount} Hadir`;
     }
 
-    function updateBaseUrl() {
-      const input = document.getElementById("baseUrlInput").value.trim();
-      if (input) {
-        baseUrl = input;
-        renderTable();
-        alert("Domain Base URL Undangan berhasil diperbarui!");
-      }
-    }
-
-    function markAsSent(id) {
-      const guest = guests.find(g => g.id === id);
-      if (guest) {
-        guest.status = 'SUDAH DIKIRIM';
-        renderTable();
-        updateStats();
-      }
-    }
-
-    function openAddModal() {
-      document.getElementById("addModal").classList.remove("hidden");
-    }
-
-    function closeAddModal() {
-      document.getElementById("addModal").classList.add("hidden");
-    }
-
-    function saveGuest() {
-      const nama = document.getElementById("modalNama").value.trim();
-      let wa = document.getElementById("modalWA").value.trim().replace(/[^0-9]/g, '');
-      const kategori = document.getElementById("modalKategori").value;
-
-      if (!nama || !wa) {
-        alert("Nama Tamu dan Nomor WhatsApp wajib diisi!");
-        return;
-      }
-
-      if (wa.startsWith("0")) {
-        wa = "62" + wa.substring(1);
-      }
-
-      guests.push({
-        id: Date.now(),
-        nama: nama,
-        wa: wa,
-        kategori: kategori,
-        status: "BELUM DIKIRIM",
-        rsvp: "Belum Konfirmasi"
-      });
-
-      renderTable();
-      updateStats();
-      closeAddModal();
-
-      document.getElementById("modalNama").value = "";
-      document.getElementById("modalWA").value = "";
-    }
-
+    // Filter Pencarian
     function filterTable() {
-      const query = document.getElementById("searchInput").value.toLowerCase();
+      const input = document.getElementById("searchInput").value.toLowerCase();
       const rows = document.querySelectorAll("#guestTableBody tr");
+
       rows.forEach(row => {
-        const text = row.textContent.toLowerCase();
-        row.style.display = text.includes(query) ? "" : "none";
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(input) ? "" : "none";
       });
     }
 
+    // Salin Link
     function copyToClipboard(text) {
       navigator.clipboard.writeText(text);
-      alert("Link undangan berhasil disalin!");
+      alert('Link berhasil disalin!');
     }
 
-    function copyCode(elementId) {
-      const code = document.getElementById(elementId).innerText;
-      navigator.clipboard.writeText(code);
-      alert("Kode berhasil disalin ke clipboard!");
+    // Update Iframe Demo
+    function updateDemoIframe() {
+      const name = document.getElementById('demoNameInput').value;
+      const iframe = document.getElementById('demoIframe');
+      iframe.src = `./?to=${encodeURIComponent(name)}`;
     }
 
-    function renderPreview() {
-      const name = document.getElementById("demoUrlParam").value || "Tamu Undangan";
-      document.getElementById("previewGuestName").textContent = name;
-    }
-
-    function exportCSV() {
-      let csvContent = "data:text/csv;charset=utf-8,Nama Tamu,No WhatsApp,Kategori,Link Undangan,Status Kirim,RSVP\n";
-      guests.forEach(g => {
-        const link = `${baseUrl}?to=${encodeURIComponent(g.nama)}`;
-        csvContent += `"${g.nama}","${g.wa}","${g.kategori}","${link}","${g.status}","${g.rsvp}"\n`;
-      });
-
-      const encodedUri = encodeURI(csvContent);
-      const link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", "Daftar_Tamu_Undangan.csv");
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
+    // Jalankan awal
+    window.onload = fetchGuestData;
   </script>
 </body>
 </html>

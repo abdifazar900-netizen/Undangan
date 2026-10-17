@@ -287,37 +287,39 @@
       }
     }
 
-    // MEMUAT DAFTAR UCAPAN DARI GOOGLE SHEETS secara REALTIME
-    async function loadWishes() {
-      const container = document.getElementById('wishesContainer');
-      try {
-        const res = await fetch(SCRIPT_URL + "?action=getGuests");
-        const json = await res.json();
-        
-        if (json.status === "success" && json.data) {
-          const wishes = json.data.filter(g => g.drafPesan || g.statusRsvp);
-          if (wishes.length > 0) {
-            container.innerHTML = '';
-            wishes.forEach(item => {
-              const box = document.createElement('div');
-              box.className = "glass-box p-3 rounded-2xl text-xs space-y-1";
-              box.innerHTML = `
-                <div class="flex justify-between font-bold text-amber-200">
-                  <span>${item.nama}</span>
-                  <span class="text-[10px] ${item.statusRsvp === 'Hadir' ? 'text-teal-400' : 'text-rose-400'}">${item.statusRsvp || 'Hadir'}</span>
-                </div>
-                <p class="text-slate-300">${item.drafPesan || '-'}</p>
-              `;
-              container.appendChild(box);
-            });
-          } else {
-            container.innerHTML = `<div class="text-center text-xs text-slate-500 py-2">Belum ada ucapan. Jadilah yang pertama!</div>`;
-          }
-        }
-      } catch (err) {
-        container.innerHTML = `<div class="text-center text-xs text-slate-500 py-2">Gagal memuat ucapan.</div>`;
+  // MEMUAT DAFTAR UCAPAN DARI GOOGLE SHEETS secara REALTIME
+async function loadWishes() {
+  const container = document.getElementById('wishesContainer');
+  try {
+    const res = await fetch(SCRIPT_URL + "?action=getGuests");
+    const json = await res.json();
+    
+    if (json.status === "success" && json.data) {
+      // Filter hanya data yang memiliki status RSVP / ucapan balasan dari tamu
+      const wishes = json.data.filter(g => g.statusRsvp && g.statusRsvp !== "Belum Konfirmasi");
+      
+      if (wishes.length > 0) {
+        container.innerHTML = '';
+        wishes.forEach(item => {
+          const box = document.createElement('div');
+          box.className = "glass-box p-3 rounded-2xl text-xs space-y-1";
+          box.innerHTML = `
+            <div class="flex justify-between font-bold text-amber-200">
+              <span>${item.nama}</span>
+              <span class="text-[10px] ${item.statusRsvp === 'Hadir' ? 'text-teal-400' : 'text-rose-400'}">${item.statusRsvp}</span>
+            </div>
+            <p class="text-slate-300">${item.ucapan || item.drafPesan || 'Selamat atas pernikahannya!'}</p>
+          `;
+          container.appendChild(box);
+        });
+      } else {
+        container.innerHTML = `<div class="text-center text-xs text-slate-500 py-2">Belum ada ucapan. Jadilah yang pertama!</div>`;
       }
     }
+  } catch (err) {
+    container.innerHTML = `<div class="text-center text-xs text-slate-500 py-2">Gagal memuat ucapan.</div>`;
+  }
+}
 
     window.onload = loadWishes;
   </script>

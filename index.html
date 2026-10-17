@@ -3,72 +3,198 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Undangan Pernikahan</title>
+  <title>Undangan Pernikahan - Fazar & Gita</title>
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Sacramento&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b0f19; color: #f1f5f9; }
+    .font-serif-custom { font-family: 'Sacramento', cursive; }
+    .glass-box { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+  </style>
 </head>
-<body class="bg-slate-900 text-white min-h-screen flex items-center justify-center p-4">
+<body class="min-h-screen">
 
-  <div class="max-w-md w-full bg-slate-800 rounded-3xl p-8 text-center space-y-6 border border-slate-700 shadow-2xl">
-    
-    <div class="space-y-2">
-      <p class="text-xs uppercase tracking-widest text-indigo-400 font-semibold">The Wedding Of</p>
-      <h1 class="text-3xl font-serif font-bold text-amber-200">Fazar & Gita</h1>
-    </div>
+  <div class="max-w-md mx-auto min-h-screen bg-slate-900 border-x border-slate-800 shadow-2xl relative pb-20">
 
-    <!-- AREA NAMA TAMU DINAMIS -->
-    <div class="bg-slate-900/80 p-6 rounded-2xl border border-slate-700 space-y-2">
-      <p class="text-xs text-slate-400">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
-      <h2 id="penerimaTamu" class="text-xl font-bold text-white">Tamu Undangan</h2>
-      <p class="text-xs text-slate-500 italic">Tanpa mengurangi rasa hormat, kami mengundang Anda untuk hadir di acara pernikahan kami.</p>
-    </div>
-
-    <div class="space-y-3 pt-4">
-      <div class="flex items-center justify-center gap-2 text-sm text-slate-300">
-        <i class="fa-regular fa-calendar text-indigo-400"></i>
-        <span>Sabtu, 24 Oktober 2026</span>
+    <!-- HERO SECTION -->
+    <section class="relative h-[85vh] flex flex-col justify-between items-center text-center p-6 bg-cover bg-center" style="background-image: linear-gradient(to bottom, rgba(15,23,42,0.4), rgba(15,23,42,0.95)), url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80');">
+      <div class="pt-8 space-y-2">
+        <p class="text-xs uppercase tracking-[0.3em] text-indigo-400 font-semibold">The Wedding Of</p>
+        <h1 class="text-5xl font-serif-custom text-amber-200 py-2">Fazar & Gita</h1>
       </div>
-      <div class="flex items-center justify-center gap-2 text-sm text-slate-300">
-        <i class="fa-solid fa-location-dot text-indigo-400"></i>
-        <span>Gedung Pernikahan Utama</span>
+
+      <!-- BANNER NAMA TAMU -->
+      <div class="w-full glass-box p-6 rounded-3xl space-y-2 my-auto">
+        <p class="text-xs text-slate-300">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
+        <h2 id="penerimaTamu" class="text-2xl font-bold text-white capitalize">Tamu Undangan</h2>
+        <p class="text-[11px] text-slate-400">Tanpa mengurangi rasa hormat, kami mengundang Anda untuk hadir di acara pernikahan kami.</p>
       </div>
-    </div>
 
-    <!-- FORM RSVP UNTUK TAMU -->
-    <form id="rsvpForm" onsubmit="kirimRSVP(event)" class="space-y-3 pt-4 border-t border-slate-700 text-left">
-      <h3 class="text-sm font-semibold text-white">Konfirmasi Kehadiran</h3>
-      
-      <select id="rsvpStatus" class="w-full bg-slate-900 border border-slate-700 text-xs rounded-xl px-3 py-2 text-slate-200">
-        <option value="Hadir">Saya Akan Hadir</option>
-        <option value="Tidak Hadir">Maaf, Tidak Bisa Hadir</option>
-      </select>
+      <div class="pb-6 animate-bounce">
+        <i class="fa-solid fa-chevron-down text-indigo-400 text-lg"></i>
+      </div>
+    </section>
 
-      <textarea id="rsvpUcapan" placeholder="Tuliskan ucapan & doa..." class="w-full bg-slate-900 border border-slate-700 text-xs rounded-xl p-3 text-slate-200 h-20"></textarea>
+    <!-- COUNTDOWN TIMER -->
+    <section class="p-6 text-center space-y-4">
+      <h2 class="text-sm font-semibold uppercase tracking-widest text-indigo-400">Menghitung Hari</h2>
+      <div class="grid grid-cols-4 gap-2 text-center" id="countdown">
+        <div class="glass-box p-3 rounded-2xl">
+          <span id="cd-days" class="text-2xl font-extrabold text-amber-200">00</span>
+          <p class="text-[10px] text-slate-400 uppercase">Hari</p>
+        </div>
+        <div class="glass-box p-3 rounded-2xl">
+          <span id="cd-hours" class="text-2xl font-extrabold text-amber-200">00</span>
+          <p class="text-[10px] text-slate-400 uppercase">Jam</p>
+        </div>
+        <div class="glass-box p-3 rounded-2xl">
+          <span id="cd-minutes" class="text-2xl font-extrabold text-amber-200">00</span>
+          <p class="text-[10px] text-slate-400 uppercase">Menit</p>
+        </div>
+        <div class="glass-box p-3 rounded-2xl">
+          <span id="cd-seconds" class="text-2xl font-extrabold text-amber-200">00</span>
+          <p class="text-[10px] text-slate-400 uppercase">Detik</p>
+        </div>
+      </div>
+    </section>
 
-      <button type="submit" id="btnRsvp" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs py-2.5 rounded-xl transition">
-        Kirim Konfirmasi
-      </button>
-    </form>
+    <!-- LOVE STORY TIMELINE -->
+    <section class="p-6 space-y-6">
+      <div class="text-center space-y-1">
+        <h2 class="text-3xl font-serif-custom text-amber-200">Kisah Cinta Kami</h2>
+        <p class="text-xs text-slate-400">Bagaimana perjalanan kami dimulai</p>
+      </div>
+
+      <div class="space-y-4 relative border-l-2 border-indigo-500/30 ml-4 pl-6">
+        <!-- Story 1 -->
+        <div class="relative">
+          <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-indigo-500 border-4 border-slate-900"></div>
+          <span class="text-[11px] font-bold text-indigo-400">Tahun 2021</span>
+          <h3 class="text-sm font-bold text-white">Pertama Pertemuan</h3>
+          <p class="text-xs text-slate-400 mt-1">Awal mula saling mengenal melalui kegiatan kampus hingga komunikasi berlanjut secara intens.</p>
+        </div>
+        <!-- Story 2 -->
+        <div class="relative">
+          <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-indigo-500 border-4 border-slate-900"></div>
+          <span class="text-[11px] font-bold text-indigo-400">Awal 2026</span>
+          <h3 class="text-sm font-bold text-white">Lamaran & Khitbah</h3>
+          <p class="text-xs text-slate-400 mt-1">Momen sakral saat kedua keluarga besar bertemu untuk mengikat niat suci melangkah ke jenjang pernikahan.</p>
+        </div>
+        <!-- Story 3 -->
+        <div class="relative">
+          <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-indigo-500 border-4 border-slate-900"></div>
+          <span class="text-[11px] font-bold text-indigo-400">24 Oktober 2026</span>
+          <h3 class="text-sm font-bold text-white">Menikah</h3>
+          <p class="text-xs text-slate-400 mt-1">Atas izin Allah SWT, kami mengikat janji suci pernikahan untuk saling mendampingi selamanya.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACARA & DETAIL LOKASI -->
+    <section class="p-6 space-y-4">
+      <div class="text-center">
+        <h2 class="text-3xl font-serif-custom text-amber-200">Acara Pernikahan</h2>
+      </div>
+
+      <div class="glass-box p-6 rounded-3xl space-y-4 text-center">
+        <div class="space-y-1">
+          <h3 class="text-lg font-bold text-indigo-300"><i class="fa-solid fa-ring mr-2"></i>Akad Nikah & Resepsi</h3>
+          <p class="text-xs text-slate-300">Sabtu, 24 Oktober 2026</p>
+          <p class="text-xs text-slate-400">Pukul 08.00 WIB - Selesai</p>
+        </div>
+        <hr class="border-slate-700">
+        <div class="space-y-2">
+          <p class="text-xs font-semibold text-white">Gedung Pernikahan Utama</p>
+          <p class="text-[11px] text-slate-400">Jl. Jendral Sudirman No. 123, Jakarta Pusat</p>
+          <a href="https://maps.google.com" target="_blank" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-4 py-2 rounded-xl transition">
+            <i class="fa-solid fa-map-location-dot"></i> Buka di Google Maps
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALERI FOTO -->
+    <section class="p-6 space-y-4">
+      <div class="text-center">
+        <h2 class="text-3xl font-serif-custom text-amber-200">Galeri Momen</h2>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=400&q=80" class="rounded-2xl h-36 w-full object-cover">
+        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=400&q=80" class="rounded-2xl h-36 w-full object-cover">
+        <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=400&q=80" class="rounded-2xl h-36 w-full object-cover">
+        <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=400&q=80" class="rounded-2xl h-36 w-full object-cover">
+      </div>
+    </section>
+
+    <!-- FORM RSVP & UCAPAN TAMU -->
+    <section class="p-6 space-y-6">
+      <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-700">
+        <h3 class="text-lg font-bold text-white text-center">Konfirmasi Kehadiran</h3>
+        <form id="rsvpForm" onsubmit="kirimRSVP(event)" class="space-y-3">
+          <div>
+            <label class="block text-xs text-slate-300 mb-1">Status Kehadiran</label>
+            <select id="rsvpStatus" class="w-full bg-slate-900 border border-slate-700 text-xs rounded-xl px-3 py-2.5 text-slate-200">
+              <option value="Hadir">Saya Akan Hadir</option>
+              <option value="Tidak Hadir">Maaf, Tidak Bisa Hadir</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs text-slate-300 mb-1">Ucapan & Doa Suci</label>
+            <textarea id="rsvpUcapan" required placeholder="Tuliskan harapan dan doa terbaik..." class="w-full bg-slate-900 border border-slate-700 text-xs rounded-xl p-3 text-slate-200 h-20 focus:outline-none focus:border-indigo-500"></textarea>
+          </div>
+          <button type="submit" id="btnRsvp" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs py-3 rounded-xl transition">
+            Kirim Konfirmasi & Ucapan
+          </button>
+        </form>
+      </div>
+
+      <!-- UCAPAN DARI TAMU LAIN -->
+      <div class="space-y-3">
+        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-comments text-indigo-400"></i> Doa & Ucapan Tamu
+        </h3>
+        <div id="wishesContainer" class="space-y-2 max-h-60 overflow-y-auto pr-1">
+          <div class="text-center text-xs text-slate-500 py-4">Memuat ucapan...</div>
+        </div>
+      </div>
+    </section>
 
   </div>
 
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzil42IARd7zFttb8RtxWEJf7CrcZFtm-hDUJCHPr1GqImwa2Ogb0FqCCs-6gaA4q93Xw/exec";
 
-    // MENGAMBIL PARAMETER NAMA TAMU DARI URL (?to=)
+    // PARAMETER NAMA TAMU
     const urlParams = new URLSearchParams(window.location.search);
     const namaTamu = urlParams.get('to');
-
     if (namaTamu) {
       document.getElementById('penerimaTamu').textContent = namaTamu;
     }
 
-    // KIRIM RSVP KE APPS SCRIPT / GOOGLE SHEETS
+    // COUNTDOWN TIMER (24 OKTOBER 2026)
+    const eventDate = new Date("October 24, 2026 08:00:00").getTime();
+    setInterval(() => {
+      const now = new Date().getTime();
+      const diff = eventDate - now;
+
+      if (diff > 0) {
+        document.getElementById('cd-days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+        document.getElementById('cd-hours').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        document.getElementById('cd-minutes').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        document.getElementById('cd-seconds').innerText = Math.floor((diff % (1000 * 60)) / 1000);
+      }
+    }, 1000);
+
+    // KIRIM RSVP
     async function kirimRSVP(e) {
       e.preventDefault();
       const btn = document.getElementById('btnRsvp');
       btn.disabled = true;
-      btn.textContent = "Sending...";
+      btn.textContent = "Mengirim...";
 
       const status = document.getElementById('rsvpStatus').value;
       const ucapan = document.getElementById('rsvpUcapan').value;
@@ -77,15 +203,50 @@
       try {
         const url = `${SCRIPT_URL}?action=rsvp&nama=${encodeURIComponent(nama)}&status=${encodeURIComponent(status)}&ucapan=${encodeURIComponent(ucapan)}`;
         await fetch(url, { method: 'POST', mode: 'no-cors' });
-        alert('Terima kasih, konfirmasi Anda berhasil terkirim!');
-        document.getElementById('rsvpForm').reset();
+        alert('Terima kasih, konfirmasi dan ucapan Anda berhasil terkirim!');
+        document.getElementById('rsvpUcapan').value = '';
+        setTimeout(loadWishes, 1500);
       } catch (err) {
-        alert('Gagal mengirim konfirmasi.');
+        alert('Gagal mengirim ucapan.');
       } finally {
         btn.disabled = false;
-        btn.textContent = "Kirim Konfirmasi";
+        btn.textContent = "Kirim Konfirmasi & Ucapan";
       }
     }
+
+    // MEMUAT DAFTAR UCAPAN REALTIME
+    async function loadWishes() {
+      const container = document.getElementById('wishesContainer');
+      try {
+        const res = await fetch(SCRIPT_URL + "?action=getGuests");
+        const json = await res.json();
+        
+        if (json.status === "success" && json.data) {
+          const wishes = json.data.filter(g => g.drafPesan || g.statusRsvp);
+          if (wishes.length > 0) {
+            container.innerHTML = '';
+            wishes.forEach(item => {
+              const box = document.createElement('div');
+              box.className = "glass-box p-3 rounded-2xl text-xs space-y-1";
+              box.innerHTML = `
+                <div class="flex justify-between font-bold text-amber-200">
+                  <span>${item.nama}</span>
+                  <span class="text-[10px] text-teal-400">${item.statusRsvp || 'Hadir'}</span>
+                </div>
+                <p class="text-slate-300">${item.drafPesan || '-'}</p>
+              `;
+              container.appendChild(box);
+            });
+          } else {
+            container.innerHTML = `<div class="text-center text-xs text-slate-500 py-2">Belum ada ucapan. Jadilah yang pertama!</div>`;
+          }
+        }
+      } catch (err) {
+        container.innerHTML = `<div class="text-center text-xs text-slate-500 py-2">Gagal memuat ucapan.</div>`;
+      }
+    }
+
+    window.onload = loadWishes;
   </script>
 </body>
 </html>

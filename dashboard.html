@@ -296,8 +296,18 @@
       const kategori = document.getElementById('inputKategori').value;
 
       try {
-        const postUrl = `${SCRIPT_URL}?action=addGuest&nama=${encodeURIComponent(nama)}&noWa=${encodeURIComponent(noWa)}&kategori=${encodeURIComponent(kategori)}`;
-        await fetch(postUrl, { method: 'POST', mode: 'no-cors' });
+        const payload = {
+          action: 'addGuest',
+          nama: nama,
+          noWa: noWa,
+          kategori: kategori
+        };
+        await fetch(SCRIPT_URL, { 
+          method: 'POST', 
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload) 
+        });
         alert('Data tamu berhasil ditambahkan!');
         closeModal();
         setTimeout(fetchGuestData, 1500);
@@ -346,7 +356,7 @@
     }
 
     // FUNGSI KOMPRES & KONVERSI FILE GAMBAR KE BASE64
-    function compressAndConvertToBase64(file, maxWidth = 600, quality = 0.7) {
+    function compressAndConvertToBase64(file, maxWidth = 400, quality = 0.5) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -368,9 +378,7 @@
 
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, width, height);
-            
-            const base64Url = canvas.toDataURL('image/jpeg', quality);
-            resolve(base64Url);
+            resolve(canvas.toDataURL('image/jpeg', quality));
           };
           img.onerror = error => reject(error);
         };
@@ -395,31 +403,29 @@
       } catch (e) { console.error("Gagal load pengaturan", e); }
     }
 
-    // MENYIMPAN PENGATURAN & GAMBAR BASE64 LANGSUNG KE SPREADSHEET
+    // MENYIMPAN PENGATURAN & GAMBAR RINGAN KE GOOGLE SHEETS
     async function saveSettings(e) {
       e.preventDefault();
       const btn = document.getElementById('btnSaveSetting');
       btn.disabled = true;
-      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan &amp; Processing Gambar...`;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...`;
 
       const textFields = ["nama_pria", "panggilan_pria", "anak_pria", "nama_wanita", "panggilan_wanita", "anak_wanita", "tanggal_acara", "jam_akad", "jam_resepsi", "lokasi_nama", "lokasi_alamat", "maps_link"];
       const fileFields = ["foto_pria", "foto_wanita", "foto_galeri_1", "foto_galeri_2", "foto_galeri_3", "foto_galeri_4"];
 
-      const params = new URLSearchParams();
-      params.append('action', 'saveSettings');
+      const payload = { action: 'saveSettings' };
 
-      // Ambil field teks
+      // Ambil teks
       textFields.forEach(f => {
-        const val = document.getElementById('set_' + f) ? document.getElementById('set_' + f).value : "";
-        params.append(f, val);
+        const el = document.getElementById('set_' + f);
+        if (el && el.value) payload[f] = el.value;
       });
 
-      // Proses konversi file gambar ke teks Base64 yang dikompres
+      // Kompres & Ambil Gambar
       for (let f of fileFields) {
         const fileInput = document.getElementById('file_' + f);
         if (fileInput && fileInput.files.length > 0) {
-          const base64Str = await compressAndConvertToBase64(fileInput.files[0]);
-          params.append(f, base64Str);
+          payload[f] = await compressAndConvertToBase64(fileInput.files[0]);
         }
       }
 
@@ -427,12 +433,12 @@
         await fetch(SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: params
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
         });
-        alert('Pengaturan dan Foto berhasil disimpan langsung ke Google Sheets!');
+        alert('Pengaturan berhasil tersimpan penuh ke Google Sheets!');
       } catch (err) {
-        alert('Gagal menyimpan pengaturan.');
+        alert('Gagal menyimpan.');
       } finally {
         btn.disabled = false;
         btn.innerHTML = `<i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Pengaturan`;

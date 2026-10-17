@@ -4,9 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Management Dashboard - Wedding Undangan Digital</title>
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body { background-color: #0f172a; color: #f8fafc; font-family: sans-serif; }
@@ -30,7 +28,6 @@
         </div>
       </div>
 
-      <!-- NAV BUTTONS (DASHBOARD & LIVE DEMO) -->
       <nav class="flex items-center gap-2 bg-slate-800/80 p-1.5 rounded-xl border border-slate-700">
         <button onclick="switchTab('dashboard')" id="btn-dashboard" class="tab-btn active px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2">
           <i class="fa-solid fa-chart-pie"></i> Dashboard
@@ -41,10 +38,10 @@
       </nav>
     </header>
 
-    <!-- TAB CONTENT: DASHBOARD -->
+    <!-- DASHBOARD -->
     <main id="tab-dashboard" class="space-y-6">
       
-      <!-- STATS CARDS -->
+      <!-- STATS -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div class="glass-card p-5 rounded-2xl flex items-center justify-between">
           <div>
@@ -87,7 +84,7 @@
         </div>
       </div>
 
-      <!-- MAIN TABLE SECTION -->
+      <!-- TABLE -->
       <div class="glass-card rounded-2xl p-6 space-y-4">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
@@ -108,7 +105,6 @@
           </div>
         </div>
 
-        <!-- TABLE -->
         <div class="overflow-x-auto">
           <table class="w-full text-left text-sm text-slate-300">
             <thead class="bg-slate-900/60 text-xs text-slate-400 uppercase tracking-wider border-b border-slate-800">
@@ -134,11 +130,11 @@
       </div>
     </main>
 
-    <!-- TAB CONTENT: LIVE DEMO -->
+    <!-- LIVE DEMO -->
     <main id="tab-demo" class="hidden space-y-6">
       <div class="glass-card rounded-2xl p-6 text-center space-y-4">
         <h2 class="text-lg font-bold text-white">Preview Undangan Digital</h2>
-        <p class="text-sm text-slate-400 max-w-md mx-auto">Gunakan simulasi parameter di bawah untuk melihat tampilan nama tamu di website secara langsung.</p>
+        <p class="text-sm text-slate-400 max-w-md mx-auto">Simulasi tampilan nama tamu di website secara langsung.</p>
         
         <div class="flex max-w-md mx-auto gap-2">
           <input type="text" id="demoNameInput" value="Ahmad & Partner" placeholder="Masukkan Nama Tamu..." class="flex-1 bg-slate-900 border border-slate-700 text-slate-200 text-sm rounded-xl px-4 py-2 focus:outline-none focus:border-indigo-500">
@@ -198,10 +194,8 @@
   </div>
 
   <script>
-    // URL Deployment Web App Apps Script Anda
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzil42IARd7zFttb8RtxWEJf7CrcZFtm-hDUJCHPr1GqImwa2Ogb0FqCCs-6gaA4q93Xw/exec"; 
 
-    // Ganti Tab Menu
     function switchTab(tab) {
       document.getElementById('tab-dashboard').classList.add('hidden');
       document.getElementById('tab-demo').classList.add('hidden');
@@ -217,7 +211,6 @@
       }
     }
 
-    // Modal Control
     function openModal() {
       document.getElementById('guestModal').classList.remove('hidden');
     }
@@ -227,7 +220,7 @@
       document.getElementById('addGuestForm').reset();
     }
 
-    // Submit Tamu Baru ke Apps Script / Google Sheets
+    // Submit Tamu Baru langsung masuk ke Google Sheet
     async function submitNewGuest(e) {
       e.preventDefault();
       const btnSubmit = document.getElementById('btnSubmitModal');
@@ -241,22 +234,16 @@
       const kategori = document.getElementById('inputKategori').value;
 
       try {
-        const formData = new URLSearchParams();
-        formData.append('action', 'addGuest');
-        formData.append('nama', nama);
-        formData.append('noWa', noWa);
-        formData.append('kategori', kategori);
-
-        await fetch(SCRIPT_URL, {
+        const postUrl = `${SCRIPT_URL}?action=addGuest&nama=${encodeURIComponent(nama)}&noWa=${encodeURIComponent(noWa)}&kategori=${encodeURIComponent(kategori)}`;
+        
+        await fetch(postUrl, {
           method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: formData
+          mode: 'no-cors'
         });
 
-        alert('Data tamu berhasil ditambahkan!');
+        alert('Data tamu berhasil dikirim ke Google Sheets!');
         closeModal();
-        setTimeout(fetchGuestData, 1500); // Reload data setelah tersimpan
+        setTimeout(fetchGuestData, 2000); 
       } catch (err) {
         console.error("Gagal menambah data:", err);
         alert('Terjadi kesalahan saat menambahkan data.');
@@ -266,15 +253,11 @@
       }
     }
 
-    // Load Data Real dari Apps Script
+    // Load Data dari Apps Script
     async function fetchGuestData() {
       const tableBody = document.getElementById('guestTableBody');
       try {
-        const response = await fetch(SCRIPT_URL + "?action=getGuests", {
-          method: "GET",
-          redirect: "follow"
-        });
-        
+        const response = await fetch(SCRIPT_URL + "?action=getGuests");
         const json = await response.json();
 
         if (json.status === "success" && json.data && json.data.length > 0) {
@@ -286,11 +269,10 @@
         }
       } catch (err) {
         console.error("Gagal mengambil data real:", err);
-        tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-rose-400">Gagal terhubung ke Google Sheets. Pastikan Web App URL sudah di-deploy dengan akses "Anyone".</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-rose-400">Gagal terhubung ke Google Sheets. Pastikan Web App URL sudah di-deploy ulang.</td></tr>`;
       }
     }
 
-    // Render Data ke Tabel
     function renderTable(guests) {
       const tableBody = document.getElementById('guestTableBody');
       tableBody.innerHTML = '';
@@ -334,7 +316,6 @@
       });
     }
 
-    // Update Angka Statistik Header
     function updateStats(guests) {
       const total = guests.length;
       const sent = guests.filter(g => g.statusKirim && g.statusKirim.toUpperCase() === 'SUDAH DIKIRIM').length;
@@ -347,7 +328,6 @@
       document.getElementById('stat-rsvp').innerText = `${rsvpCount} Hadir`;
     }
 
-    // Filter Pencarian
     function filterTable() {
       const input = document.getElementById("searchInput").value.toLowerCase();
       const rows = document.querySelectorAll("#guestTableBody tr");
@@ -358,20 +338,17 @@
       });
     }
 
-    // Salin Link
     function copyToClipboard(text) {
       navigator.clipboard.writeText(text);
       alert('Link berhasil disalin!');
     }
 
-    // Update Iframe Demo
     function updateDemoIframe() {
       const name = document.getElementById('demoNameInput').value;
       const iframe = document.getElementById('demoIframe');
       iframe.src = `./?to=${encodeURIComponent(name)}`;
     }
 
-    // Jalankan awal saat halaman dimuat
     window.onload = fetchGuestData;
   </script>
 </body>

@@ -124,8 +124,17 @@
           </button>
         </div>
 
-        <!-- MEMPELAI PRIA -->
+        <!-- UPLOAD BACKGROUND UTAMA COVER & HEADER -->
         <div class="space-y-4">
+          <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider border-l-4 border-indigo-500 pl-2">Foto Background Utama</h3>
+          <div>
+            <label class="block text-xs text-slate-300 mb-1">Upload Foto Background Utama (Cover Screen &amp; Header atas)</label>
+            <input type="file" id="file_foto_bg" accept="image/*" class="w-full bg-slate-900 border border-slate-700 text-xs rounded-xl p-2 text-slate-300 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:bg-indigo-600 file:text-white file:text-xs cursor-pointer">
+          </div>
+        </div>
+
+        <!-- MEMPELAI PRIA -->
+        <div class="space-y-4 pt-4 border-t border-slate-800">
           <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider border-l-4 border-indigo-500 pl-2">Data Mempelai Pria</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -356,7 +365,7 @@
     }
 
     // FUNGSI KOMPRES & KONVERSI FILE GAMBAR KE BASE64
-    function compressAndConvertToBase64(file, maxWidth = 400, quality = 0.5) {
+    function compressAndConvertToBase64(file, maxWidth = 600, quality = 0.6) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -411,7 +420,7 @@
       btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...`;
 
       const textFields = ["nama_pria", "panggilan_pria", "anak_pria", "nama_wanita", "panggilan_wanita", "anak_wanita", "tanggal_acara", "jam_akad", "jam_resepsi", "lokasi_nama", "lokasi_alamat", "maps_link"];
-      const fileFields = ["foto_pria", "foto_wanita", "foto_galeri_1", "foto_galeri_2", "foto_galeri_3", "foto_galeri_4"];
+      const fileFields = ["foto_bg", "foto_pria", "foto_wanita", "foto_galeri_1", "foto_galeri_2", "foto_galeri_3", "foto_galeri_4"];
 
       const payload = { action: 'saveSettings' };
 

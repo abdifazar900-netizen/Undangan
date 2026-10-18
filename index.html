@@ -8,26 +8,18 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Scheherazade+New:wght@700&display=swap" rel="stylesheet">
+  <!-- Google Fonts Lengkap -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Great+Vibes&family=Playfair+Display:ital,wght@0,600;1,400&family=Plus+Jakarta+Sans:wght@400;600;700&family=Sacramento&family=Scheherazade+New:wght@700&display=swap" rel="stylesheet">
   
   <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; transition: background-color 0.5s, color 0.5s; }
-    .font-serif-title { font-family: 'Playfair Display', serif; }
-    .font-script { font-family: 'Great Vibes', cursive; }
-    .font-cinzel { font-family: 'Cinzel', serif; }
-    .font-arabic { font-family: 'Scheherazade New', serif; }
-    
-    .card-aesthetic { 
-      backdrop-filter: blur(8px); 
-      transition: all 0.5s ease;
-    }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.5s ease; }
+    .card-aesthetic { backdrop-filter: blur(10px); transition: all 0.5s ease; }
 
-    /* Arch Frame Foto */
-    .arch-frame {
-      border-top-left-radius: 120px;
-      border-top-right-radius: 120px;
-    }
+    /* Shape Frames Dinamis */
+    .frame-arch { border-radius: 120px 120px 0 0; }
+    .frame-circle { border-radius: 9999px; }
+    .frame-rounded { border-radius: 2rem; }
+    .frame-hex { clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); }
 
     #cover-screen { transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out; }
     #cover-screen.hidden-cover { transform: translateY(-100%); opacity: 0; pointer-events: none; }
@@ -35,21 +27,18 @@
 </head>
 <body id="main-body" class="min-h-screen bg-[#fcfbf7] text-[#4a4238]">
 
-  <!-- ==================== 1. COVER SCREEN ==================== -->
-  <div id="cover-screen" class="fixed inset-0 z-50 flex flex-col justify-between items-center text-center p-6 bg-cover bg-center transition-all duration-700" style="background-image: linear-gradient(to bottom, rgba(252,251,247,0.7), rgba(252,251,247,0.95)), url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80');">
-    
-    <!-- Ornamen Atas -->
+  <!-- COVER SCREEN -->
+  <div id="cover-screen" class="fixed inset-0 z-50 flex flex-col justify-between items-center text-center p-6 bg-cover bg-center transition-all duration-700">
     <div class="pt-8 space-y-2">
-      <div id="theme-icon-cover" class="text-2xl mb-1 opacity-80"><i class="fa-solid fa-seedling"></i></div>
+      <div id="theme-icon-cover" class="text-3xl mb-1"><i class="fa-solid fa-seedling"></i></div>
       <p class="text-xs uppercase tracking-[0.3em] font-semibold" id="txt-subtitle-cover">The Wedding Of</p>
-      <h1 class="text-5xl font-script py-2" id="txt-judul-cover">Loading...</h1>
-      <p class="text-xs font-serif-title italic" id="txt-tgl-cover">-</p>
+      <h1 class="text-5xl py-2" id="txt-judul-cover">Loading...</h1>
+      <p class="text-xs italic" id="txt-tgl-cover">-</p>
     </div>
 
-    <!-- BANNER NAMA TAMU DINAMIS -->
-    <div id="card-cover" class="w-full max-w-xs card-aesthetic p-6 rounded-3xl space-y-3 my-auto text-center border shadow-lg">
+    <div id="card-cover" class="w-full max-w-xs card-aesthetic p-6 rounded-3xl space-y-3 my-auto text-center border shadow-xl">
       <p class="text-xs italic opacity-80">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
-      <h2 id="coverPenerimaTamu" class="text-xl font-bold font-serif-title capitalize">Tamu Undangan</h2>
+      <h2 id="coverPenerimaTamu" class="text-xl font-bold capitalize">Tamu Undangan</h2>
       <p class="text-[11px] leading-relaxed opacity-75">Tanpa mengurangi rasa hormat, kami mengundang Anda untuk hadir di hari bahagia kami.</p>
       
       <button id="btn-buka-undangan" onclick="bukaUndangan()" class="w-full mt-2 font-medium text-xs py-3 rounded-full transition flex items-center justify-center gap-2 shadow-lg">
@@ -60,64 +49,64 @@
     <p class="text-[10px] opacity-60 pb-4">Mohon maaf apabila ada kesalahan penulisan nama/gelar</p>
   </div>
 
-  <!-- ==================== KONTEN UTAMA UNDANGAN ==================== -->
+  <!-- KONTEN UTAMA -->
   <div id="main-wrapper" class="max-w-md mx-auto min-h-screen border-x shadow-2xl relative pb-20">
 
     <!-- HERO HEADER -->
-    <section id="bg-hero" class="relative h-[60vh] flex flex-col justify-end items-center text-center p-6 bg-cover bg-center rounded-b-[40px] shadow-sm" style="background-image: linear-gradient(to bottom, rgba(247,244,237,0.2), rgba(247,244,237,1)), url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80');">
+    <section id="bg-hero" class="relative h-[55vh] flex flex-col justify-end items-center text-center p-6 bg-cover bg-center rounded-b-[40px]">
       <div class="space-y-2 pb-6">
         <span id="badge-header" class="inline-block px-3 py-1 rounded-full text-[10px] uppercase tracking-widest font-semibold mb-2">Walimatul 'Ursy</span>
-        <h1 class="text-5xl font-script" id="txt-judul-utama">Loading...</h1>
-        <p class="text-xs font-serif-title italic" id="txt-tgl-hero">-</p>
+        <h1 class="text-5xl" id="txt-judul-utama">Loading...</h1>
+        <p class="text-xs italic" id="txt-tgl-hero">-</p>
       </div>
     </section>
 
-    <!-- ==================== 2. MEMPELAI PENGANTIN ==================== -->
+    <!-- MEMPELAI PENGANTIN -->
     <section class="p-6 space-y-8 text-center">
       <div class="space-y-2">
-        <p class="text-xs italic font-serif-title max-w-xs mx-auto leading-relaxed opacity-85">"Dan di antara tanda-tanda (kebesaran-Nya) ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya."</p>
-        <div id="divider-line" class="w-12 h-0.5 mx-auto my-3"></div>
-        <h2 class="text-3xl font-script">Mempelai Pengantin</h2>
+        <p class="text-xs italic max-w-xs mx-auto leading-relaxed opacity-85">"Dan di antara tanda-tanda (kebesaran-Nya) ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri..."</p>
+        <div id="divider-line" class="w-16 h-0.5 mx-auto my-3"></div>
+        <h2 class="text-3xl" id="title-mempelai">Mempelai Pengantin</h2>
       </div>
 
-      <!-- Pengantin Pria -->
-      <div id="card-pria" class="card-aesthetic p-6 rounded-3xl space-y-3 relative overflow-hidden border shadow-sm">
-        <div class="w-32 h-44 mx-auto arch-frame overflow-hidden border-2 shadow-md">
+      <!-- Pria -->
+      <div id="card-pria" class="card-aesthetic p-6 rounded-3xl space-y-3 relative overflow-hidden border">
+        <div id="frame-pria" class="w-32 h-40 mx-auto overflow-hidden border-2 shadow-md frame-arch">
           <img id="img-pria" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" class="w-full h-full object-cover">
         </div>
         <div>
-          <h3 class="text-xl font-serif-title font-bold" id="txt-nama-pria">Pengantin Pria</h3>
+          <h3 class="text-xl font-bold" id="txt-nama-pria">Pengantin Pria</h3>
           <p class="text-xs font-medium mt-1 opacity-80">Mempelai Pria</p>
         </div>
         <p class="text-xs leading-relaxed opacity-80" id="txt-anak-pria">-</p>
       </div>
 
-      <div class="font-script text-4xl opacity-80">&amp;</div>
+      <div class="text-4xl opacity-80">&amp;</div>
 
-      <!-- Pengantin Wanita -->
-      <div id="card-wanita" class="card-aesthetic p-6 rounded-3xl space-y-3 relative overflow-hidden border shadow-sm">
-        <div class="w-32 h-44 mx-auto arch-frame overflow-hidden border-2 shadow-md">
+      <!-- Wanita -->
+      <div id="card-wanita" class="card-aesthetic p-6 rounded-3xl space-y-3 relative overflow-hidden border">
+        <div id="frame-wanita" class="w-32 h-40 mx-auto overflow-hidden border-2 shadow-md frame-arch">
           <img id="img-wanita" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" class="w-full h-full object-cover">
         </div>
         <div>
-          <h3 class="text-xl font-serif-title font-bold" id="txt-nama-wanita">Pengantin Wanita</h3>
+          <h3 class="text-xl font-bold" id="txt-nama-wanita">Pengantin Wanita</h3>
           <p class="text-xs font-medium mt-1 opacity-80">Mempelai Wanita</p>
         </div>
         <p class="text-xs leading-relaxed opacity-80" id="txt-anak-wanita">-</p>
       </div>
     </section>
 
-    <!-- ==================== 3. DETAIL ACARA ==================== -->
+    <!-- DETAIL ACARA -->
     <section class="p-6 space-y-4">
       <div class="text-center">
-        <h2 class="text-4xl font-script">Rangkaian Acara</h2>
+        <h2 class="text-4xl" id="title-acara">Rangkaian Acara</h2>
       </div>
 
-      <div id="card-acara" class="card-aesthetic p-6 rounded-3xl space-y-4 text-center border shadow-sm">
+      <div id="card-acara" class="card-aesthetic p-6 rounded-3xl space-y-4 text-center border">
         <div id="icon-ring" class="w-12 h-12 mx-auto rounded-full flex items-center justify-center text-xl shadow-inner">
           <i class="fa-solid fa-rings-wedding"></i>
         </div>
-        <h3 class="text-xl font-serif-title font-bold">Akad &amp; Resepsi</h3>
+        <h3 class="text-xl font-bold">Akad &amp; Resepsi</h3>
         <p class="text-xs font-semibold" id="txt-tgl-acara">-</p>
         
         <div id="box-jam" class="grid grid-cols-2 gap-2 text-xs py-2 rounded-2xl border">
@@ -142,24 +131,23 @@
       </div>
     </section>
 
-    <!-- ==================== 4. GALERI FOTO ==================== -->
+    <!-- GALERI -->
     <section class="p-6 space-y-4">
       <div class="text-center">
-        <h2 class="text-4xl font-script">Galeri Momen</h2>
-        <p class="text-xs italic font-serif-title opacity-75">Ukiran kenangan kebahagiaan kami</p>
+        <h2 class="text-4xl" id="title-galeri">Galeri Momen</h2>
       </div>
       <div class="grid grid-cols-2 gap-3">
-        <img id="img-galeri-1" src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=400&q=80" class="rounded-2xl h-40 w-full object-cover shadow-sm border">
-        <img id="img-galeri-2" src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=400&q=80" class="rounded-2xl h-40 w-full object-cover shadow-sm border">
-        <img id="img-galeri-3" src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=400&q=80" class="rounded-2xl h-40 w-full object-cover shadow-sm border">
-        <img id="img-galeri-4" src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=400&q=80" class="rounded-2xl h-40 w-full object-cover shadow-sm border">
+        <img id="img-galeri-1" src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=400&q=80" class="rounded-2xl h-40 w-full object-cover border">
+        <img id="img-galeri-2" src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=400&q=80" class="rounded-2xl h-40 w-full object-cover border">
+        <img id="img-galeri-3" src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=400&q=80" class="rounded-2xl h-40 w-full object-cover border">
+        <img id="img-galeri-4" src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=400&q=80" class="rounded-2xl h-40 w-full object-cover border">
       </div>
     </section>
 
-    <!-- ==================== 5. FORM RSVP & UCAPAN TAMU ==================== -->
+    <!-- RSVP & UCAPAN -->
     <section class="p-6 space-y-6">
-      <div id="card-rsvp" class="card-aesthetic p-6 rounded-3xl space-y-4 border shadow-sm">
-        <h3 class="text-xl font-serif-title font-bold text-center">Konfirmasi Kehadiran</h3>
+      <div id="card-rsvp" class="card-aesthetic p-6 rounded-3xl space-y-4 border">
+        <h3 class="text-xl font-bold text-center">Konfirmasi Kehadiran</h3>
         <form id="rsvpForm" onsubmit="kirimRSVP(event)" class="space-y-3">
           <div>
             <label class="block text-xs font-medium mb-1">Status Kehadiran</label>
@@ -178,7 +166,6 @@
         </form>
       </div>
 
-      <!-- UCAPAN TAMU REALTIME -->
       <div class="space-y-3">
         <h3 class="text-sm font-bold flex items-center gap-2">
           <i class="fa-solid fa-comments"></i> Doa &amp; Ucapan
@@ -189,32 +176,21 @@
       </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer class="text-center text-[11px] pb-8 space-y-1 opacity-70">
-      <p class="font-serif-title italic">Merupakan suatu kehormatan & kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.</p>
-      <p class="font-semibold mt-2">Terima Kasih</p>
-    </footer>
-
   </div>
 
-  <!-- SCRIPT KONEKSI REALTIME & TEMA ENGINE -->
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzil42IARd7zFttb8RtxWEJf7CrcZFtm-hDUJCHPr1GqImwa2Ogb0FqCCs-6gaA4q93Xw/exec";
 
-    // BACA PARAMETER NAMA TAMU
     const urlParams = new URLSearchParams(window.location.search);
     const namaTamu = urlParams.get('to');
-
-    if (namaTamu) {
-      document.getElementById('coverPenerimaTamu').textContent = namaTamu;
-    }
+    if (namaTamu) document.getElementById('coverPenerimaTamu').textContent = namaTamu;
 
     function bukaUndangan() {
       document.getElementById('cover-screen').classList.add('hidden-cover');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // MAP APLIKASI TEMA
+    // MAP TEMA LENGKAP (FONT, BENTUK BINGKAI & WARNA)
     function applyTheme(temaKey) {
       const body = document.getElementById('main-body');
       const wrapper = document.getElementById('main-wrapper');
@@ -228,129 +204,131 @@
       const inputs = document.querySelectorAll('input, select, textarea');
       const themeIcon = document.getElementById('theme-icon-cover');
 
-      // TEMA DEFAULTS (FLORAL)
-      let config = {
-        bgBody: '#fcfbf7',
-        bgWrapper: '#f7f4ed',
-        textColor: '#4a4238',
-        cardBg: 'rgba(255, 255, 255, 0.85)',
-        cardBorder: 'rgba(212, 175, 55, 0.25)',
-        btnBg: '#854d0e',
-        btnText: '#fefce8',
-        badgeBg: 'rgba(254, 240, 138, 0.6)',
-        badgeText: '#713f12',
-        lineColor: '#fde047',
-        inputBg: '#ffffff',
-        icon: 'fa-seedling'
+      const titleCover = document.getElementById('txt-judul-cover');
+      const titleUtama = document.getElementById('txt-judul-utama');
+      const titleMempelai = document.getElementById('title-mempelai');
+      const titleAcara = document.getElementById('title-acara');
+      const titleGaleri = document.getElementById('title-galeri');
+
+      const framePria = document.getElementById('frame-pria');
+      const frameWanita = document.getElementById('frame-wanita');
+
+      // Default: Floral Aesthetic
+      let cfg = {
+        bgBody: '#fcfbf7', bgWrapper: '#f7f4ed', textColor: '#4a4238',
+        cardBg: 'rgba(255, 255, 255, 0.85)', cardBorder: 'rgba(212, 175, 55, 0.25)',
+        btnBg: '#854d0e', btnText: '#fefce8', badgeBg: 'rgba(254, 240, 138, 0.6)',
+        badgeText: '#713f12', fontTitle: "'Great Vibes', cursive", frameClass: 'frame-arch', icon: 'fa-seedling'
       };
 
       if (temaKey === 'jawa') {
-        config = {
-          bgBody: '#2A1B0E', bgWrapper: '#3B2717', textColor: '#F5E6D3',
-          cardBg: 'rgba(67, 42, 23, 0.85)', cardBorder: 'rgba(217, 119, 6, 0.4)',
+        cfg = {
+          bgBody: '#1F130B', bgWrapper: '#2D1D12', textColor: '#F3E5D8',
+          cardBg: 'rgba(56, 35, 20, 0.9)', cardBorder: 'rgba(217, 119, 6, 0.5)',
           btnBg: '#D97706', btnText: '#FFFFFF', badgeBg: 'rgba(217, 119, 6, 0.25)',
-          badgeText: '#FBBF24', lineColor: '#D97706', inputBg: '#2A1B0E', icon: 'fa-archway'
+          badgeText: '#FBBF24', fontTitle: "'Cinzel', serif", frameClass: 'frame-arch', icon: 'fa-archway'
         };
       } else if (temaKey === 'sunda') {
-        config = {
+        cfg = {
           bgBody: '#F0F7F4', bgWrapper: '#E2EFEA', textColor: '#1B3B2B',
-          cardBg: 'rgba(255, 255, 255, 0.88)', cardBorder: 'rgba(16, 185, 129, 0.25)',
+          cardBg: 'rgba(255, 255, 255, 0.9)', cardBorder: 'rgba(16, 185, 129, 0.3)',
           btnBg: '#059669', btnText: '#FFFFFF', badgeBg: 'rgba(209, 250, 229, 0.8)',
-          badgeText: '#065F46', lineColor: '#34D399', inputBg: '#FFFFFF', icon: 'fa-leaf'
+          badgeText: '#065F46', fontTitle: "'Sacramento', cursive", frameClass: 'frame-circle', icon: 'fa-leaf'
         };
       } else if (temaKey === 'melayu') {
-        config = {
+        cfg = {
           bgBody: '#3F000B', bgWrapper: '#54000E', textColor: '#FEF08A',
-          cardBg: 'rgba(113, 9, 29, 0.85)', cardBorder: 'rgba(250, 204, 21, 0.4)',
+          cardBg: 'rgba(113, 9, 29, 0.85)', cardBorder: 'rgba(250, 204, 21, 0.5)',
           btnBg: '#EAB308', btnText: '#422006', badgeBg: 'rgba(250, 204, 21, 0.2)',
-          badgeText: '#FEF08A', lineColor: '#EAB308', inputBg: '#3F000B', icon: 'fa-crown'
+          badgeText: '#FEF08A', fontTitle: "'Cinzel', serif", frameClass: 'frame-arch', icon: 'fa-crown'
         };
       } else if (temaKey === 'betawi') {
-        config = {
+        cfg = {
           bgBody: '#FFF5F5', bgWrapper: '#FFE3E3', textColor: '#881337',
-          cardBg: 'rgba(255, 255, 255, 0.9)', cardBorder: 'rgba(244, 63, 94, 0.3)',
-          btnBg: '#E11D48', btnText: '#FFFFFF', badgeBg: 'rgba(ffe4e6, 0.8)',
-          badgeText: '#9F1239', lineColor: '#FB7185', inputBg: '#FFFFFF', icon: 'fa-masks-theater'
+          cardBg: 'rgba(255, 255, 255, 0.92)', cardBorder: 'rgba(244, 63, 94, 0.4)',
+          btnBg: '#E11D48', btnText: '#FFFFFF', badgeBg: 'rgba(255, 228, 230, 0.9)',
+          badgeText: '#9F1239', fontTitle: "'Playfair Display', serif", frameClass: 'frame-rounded', icon: 'fa-masks-theater'
         };
       } else if (temaKey === 'bugis') {
-        config = {
+        cfg = {
           bgBody: '#2D0A0A', bgWrapper: '#451010', textColor: '#FDE68A',
-          cardBg: 'rgba(88, 28, 28, 0.85)', cardBorder: 'rgba(245, 158, 11, 0.4)',
-          btnBg: '#D97706', btnText: '#FFFFFF', badgeBg: 'rgba(245, 158, 11, 0.2)',
-          badgeText: '#FDE68A', lineColor: '#F59E0B', inputBg: '#2D0A0A', icon: 'fa-gem'
+          cardBg: 'rgba(88, 28, 28, 0.9)', cardBorder: 'rgba(245, 158, 11, 0.5)',
+          btnBg: '#D97706', btnText: '#FFFFFF', badgeBg: 'rgba(245, 158, 11, 0.25)',
+          badgeText: '#FDE68A', fontTitle: "'Cinzel', serif", frameClass: 'frame-rounded', icon: 'fa-gem'
         };
       } else if (temaKey === 'minang') {
-        config = {
+        cfg = {
           bgBody: '#310404', bgWrapper: '#4A0808', textColor: '#FEF08A',
-          cardBg: 'rgba(127, 29, 29, 0.85)', cardBorder: 'rgba(234, 179, 8, 0.4)',
-          btnBg: '#CA8A04', btnText: '#FFFFFF', badgeBg: 'rgba(234, 179, 8, 0.2)',
-          badgeText: '#FEF08A', lineColor: '#EAB308', inputBg: '#310404', icon: 'fa-place-of-worship'
+          cardBg: 'rgba(127, 29, 29, 0.9)', cardBorder: 'rgba(234, 179, 8, 0.5)',
+          btnBg: '#CA8A04', btnText: '#FFFFFF', badgeBg: 'rgba(234, 179, 8, 0.25)',
+          badgeText: '#FEF08A', fontTitle: "'Cinzel', serif", frameClass: 'frame-arch', icon: 'fa-place-of-worship'
         };
       } else if (temaKey === 'gold') {
-        config = {
+        cfg = {
           bgBody: '#18181B', bgWrapper: '#27272A', textColor: '#FEF08A',
-          cardBg: 'rgba(39, 39, 42, 0.85)', cardBorder: 'rgba(234, 179, 8, 0.35)',
-          btnBg: '#CA8A04', btnText: '#18181B', badgeBg: 'rgba(234, 179, 8, 0.15)',
-          badgeText: '#FDE047', lineColor: '#EAB308', inputBg: '#18181B', icon: 'fa-star'
+          cardBg: 'rgba(39, 39, 42, 0.88)', cardBorder: 'rgba(234, 179, 8, 0.4)',
+          btnBg: '#CA8A04', btnText: '#18181B', badgeBg: 'rgba(234, 179, 8, 0.2)',
+          badgeText: '#FDE047', fontTitle: "'Cinzel', serif", frameClass: 'frame-circle', icon: 'fa-star'
         };
       } else if (temaKey === 'dark') {
-        config = {
+        cfg = {
           bgBody: '#0F172A', bgWrapper: '#1E293B', textColor: '#F1F5F9',
-          cardBg: 'rgba(30, 41, 59, 0.8)', cardBorder: 'rgba(99, 102, 241, 0.3)',
-          btnBg: '#4F46E5', btnText: '#FFFFFF', badgeBg: 'rgba(99, 102, 241, 0.2)',
-          badgeText: '#818CF8', lineColor: '#6366F1', inputBg: '#0F172A', icon: 'fa-moon'
+          cardBg: 'rgba(30, 41, 59, 0.85)', cardBorder: 'rgba(99, 102, 241, 0.4)',
+          btnBg: '#4F46E5', btnText: '#FFFFFF', badgeBg: 'rgba(99, 102, 241, 0.25)',
+          badgeText: '#818CF8', fontTitle: "'Plus Jakarta Sans', sans-serif", frameClass: 'frame-rounded', icon: 'fa-moon'
         };
       } else if (temaKey === 'islamic') {
-        config = {
+        cfg = {
           bgBody: '#062C22', bgWrapper: '#0B3C30', textColor: '#ECFDF5',
-          cardBg: 'rgba(15, 61, 49, 0.85)', cardBorder: 'rgba(52, 211, 153, 0.3)',
-          btnBg: '#059669', btnText: '#FFFFFF', badgeBg: 'rgba(52, 211, 153, 0.15)',
-          badgeText: '#6EE7B7', lineColor: '#34D399', inputBg: '#062C22', icon: 'fa-kaaba'
+          cardBg: 'rgba(15, 61, 49, 0.9)', cardBorder: 'rgba(52, 211, 153, 0.4)',
+          btnBg: '#059669', btnText: '#FFFFFF', badgeBg: 'rgba(52, 211, 153, 0.2)',
+          badgeText: '#6EE7B7', fontTitle: "'Scheherazade New', serif", frameClass: 'frame-arch', icon: 'fa-kaaba'
         };
       }
 
-      // Terapkan Gaya
-      body.style.backgroundColor = config.bgBody;
-      body.style.color = config.textColor;
-      wrapper.style.backgroundColor = config.bgWrapper;
-      wrapper.style.borderColor = config.cardBorder;
+      // Terapkan Gaya & Warna
+      body.style.backgroundColor = cfg.bgBody;
+      body.style.color = cfg.textColor;
+      wrapper.style.backgroundColor = cfg.bgWrapper;
+      wrapper.style.borderColor = cfg.cardBorder;
 
-      if (themeIcon) themeIcon.innerHTML = `<i class="fa-solid ${config.icon}"></i>`;
+      if (themeIcon) themeIcon.innerHTML = `<i class="fa-solid ${cfg.icon}"></i>`;
 
-      cards.forEach(card => {
-        card.style.backgroundColor = config.cardBg;
-        card.style.borderColor = config.cardBorder;
+      [titleCover, titleUtama, titleMempelai, titleAcara, titleGaleri].forEach(el => {
+        if (el) el.style.fontFamily = cfg.fontTitle;
       });
 
-      [btnBuka, btnRsvp, linkMaps].forEach(btn => {
-        if(btn) {
-          btn.style.backgroundColor = config.btnBg;
-          btn.style.color = config.btnText;
+      // Terapkan Bentuk Bingkai Foto
+      [framePria, frameWanita].forEach(fr => {
+        if (fr) {
+          fr.className = `w-32 h-40 mx-auto overflow-hidden border-2 shadow-md ${cfg.frameClass}`;
+          fr.style.borderColor = cfg.cardBorder;
         }
       });
 
-      if (badge) {
-        badge.style.backgroundColor = config.badgeBg;
-        badge.style.color = config.badgeText;
-      }
+      cards.forEach(card => {
+        card.style.backgroundColor = cfg.cardBg;
+        card.style.borderColor = cfg.cardBorder;
+      });
 
-      if (iconRing) {
-        iconRing.style.backgroundColor = config.badgeBg;
-        iconRing.style.color = config.badgeText;
-      }
+      [btnBuka, btnRsvp, linkMaps].forEach(btn => {
+        if (btn) {
+          btn.style.backgroundColor = cfg.btnBg;
+          btn.style.color = cfg.btnText;
+        }
+      });
 
-      if (boxJam) {
-        boxJam.style.borderColor = config.cardBorder;
-      }
+      if (badge) { badge.style.backgroundColor = cfg.badgeBg; badge.style.color = cfg.badgeText; }
+      if (iconRing) { iconRing.style.backgroundColor = cfg.badgeBg; iconRing.style.color = cfg.badgeText; }
+      if (boxJam) boxJam.style.borderColor = cfg.cardBorder;
 
       inputs.forEach(input => {
-        input.style.backgroundColor = config.inputBg;
-        input.style.color = config.textColor;
-        input.style.borderColor = config.cardBorder;
+        input.style.backgroundColor = cfg.bgBody;
+        input.style.color = cfg.textColor;
+        input.style.borderColor = cfg.cardBorder;
       });
     }
 
-    // BACA PENGATURAN & FOTO BASE64 DARI SPREADSHEET
     async function loadSettings() {
       try {
         const res = await fetch(SCRIPT_URL + "?action=getSettings");
@@ -358,13 +336,8 @@
         
         if (json.status === "success" && json.data) {
           const s = json.data;
-          
-          // Terapkan Tema yang Dipilih dari Dashboard
-          if (s.tema) {
-            applyTheme(s.tema);
-          }
+          if (s.tema) applyTheme(s.tema);
 
-          // Nama Panggilan untuk Judul
           const pPria = s.panggilan_pria || s.nama_pria || "Pria";
           const pWanita = s.panggilan_wanita || s.nama_wanita || "Wanita";
           const judul = pPria + " & " + pWanita;
@@ -376,23 +349,19 @@
             document.getElementById('txt-tgl-hero').innerText = s.tanggal_acara;
           }
 
-          // Ubah Foto Background Cover & Header Jika Tersedia
           if (s.foto_bg) {
             document.getElementById('cover-screen').style.backgroundImage = `linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.7)), url('${s.foto_bg}')`;
             document.getElementById('bg-hero').style.backgroundImage = `linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.6)), url('${s.foto_bg}')`;
           }
 
-          // Mempelai Pria
           if(s.nama_pria) document.getElementById('txt-nama-pria').innerText = s.nama_pria;
           if(s.anak_pria) document.getElementById('txt-anak-pria').innerText = s.anak_pria;
           if(s.foto_pria) document.getElementById('img-pria').src = s.foto_pria;
 
-          // Mempelai Wanita
           if(s.nama_wanita) document.getElementById('txt-nama-wanita').innerText = s.nama_wanita;
           if(s.anak_wanita) document.getElementById('txt-anak-wanita').innerText = s.anak_wanita;
           if(s.foto_wanita) document.getElementById('img-wanita').src = s.foto_wanita;
 
-          // Detail Acara
           if(s.tanggal_acara) document.getElementById('txt-tgl-acara').innerText = s.tanggal_acara;
           if(s.jam_akad) document.getElementById('txt-jam-akad').innerText = s.jam_akad;
           if(s.jam_resepsi) document.getElementById('txt-jam-resepsi').innerText = s.jam_resepsi;
@@ -400,34 +369,26 @@
           if(s.lokasi_alamat) document.getElementById('txt-lokasi-alamat').innerText = s.lokasi_alamat;
           if(s.maps_link) document.getElementById('link-maps').href = s.maps_link;
 
-          // Album Galeri Foto
           if(s.foto_galeri_1) document.getElementById('img-galeri-1').src = s.foto_galeri_1;
           if(s.foto_galeri_2) document.getElementById('img-galeri-2').src = s.foto_galeri_2;
           if(s.foto_galeri_3) document.getElementById('img-galeri-3').src = s.foto_galeri_3;
           if(s.foto_galeri_4) document.getElementById('img-galeri-4').src = s.foto_galeri_4;
         }
-      } catch (err) {
-        console.error("Gagal memuat pengaturan:", err);
-      }
+      } catch (err) { console.error("Gagal load data", err); }
     }
 
-    // KIRIM RSVP
     async function kirimRSVP(e) {
       e.preventDefault();
       const btn = document.getElementById('btnRsvp');
       btn.disabled = true;
       btn.textContent = "Mengirim...";
 
-      const status = document.getElementById('rsvpStatus').value;
-      const ucapan = document.getElementById('rsvpUcapan').value;
-      const nama = namaTamu || "Tamu Undangan";
-
       try {
         const payload = {
           action: 'rsvp',
-          nama: nama,
-          status: status,
-          ucapan: ucapan
+          nama: namaTamu || "Tamu Undangan",
+          status: document.getElementById('rsvpStatus').value,
+          ucapan: document.getElementById('rsvpUcapan').value
         };
         await fetch(SCRIPT_URL, { 
           method: 'POST', 
@@ -435,53 +396,40 @@
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(payload)
         });
-        alert('Terima kasih, konfirmasi & ucapan Anda berhasil terkirim!');
+        alert('Terima kasih, ucapan berhasil terkirim!');
         document.getElementById('rsvpUcapan').value = '';
         setTimeout(loadWishes, 1500);
-      } catch (err) {
-        alert('Gagal mengirim ucapan.');
-      } finally {
-        btn.disabled = false;
-        btn.textContent = "Kirim Konfirmasi & Ucapan";
-      }
+      } catch (err) { alert('Gagal mengirim ucapan.'); }
+      finally { btn.disabled = false; btn.textContent = "Kirim Konfirmasi & Ucapan"; }
     }
 
-    // LOAD UCAPAN REALTIME
     async function loadWishes() {
       const container = document.getElementById('wishesContainer');
       try {
         const res = await fetch(SCRIPT_URL + "?action=getGuests");
         const json = await res.json();
-        
         if (json.status === "success" && json.data) {
           const wishes = json.data.filter(g => g.ucapan || (g.statusRsvp && g.statusRsvp !== "Belum Konfirmasi"));
           if (wishes.length > 0) {
             container.innerHTML = '';
             wishes.forEach(item => {
               const box = document.createElement('div');
-              box.className = "card-aesthetic p-3 rounded-2xl text-xs space-y-1 border shadow-sm";
+              box.className = "card-aesthetic p-3 rounded-2xl text-xs space-y-1 border";
               box.innerHTML = `
                 <div class="flex justify-between font-bold">
                   <span>${item.nama}</span>
-                  <span class="text-[10px] ${item.statusRsvp === 'Hadir' ? 'text-emerald-500 font-semibold' : 'text-rose-500 font-semibold'}">${item.statusRsvp || 'Hadir'}</span>
+                  <span class="text-[10px] ${item.statusRsvp === 'Hadir' ? 'text-emerald-500' : 'text-rose-500'}">${item.statusRsvp || 'Hadir'}</span>
                 </div>
                 <p class="opacity-80 leading-relaxed">${item.ucapan || '-'}</p>
               `;
               container.appendChild(box);
             });
-          } else {
-            container.innerHTML = `<div class="text-center text-xs opacity-50 py-2">Belum ada ucapan. Jadilah yang pertama!</div>`;
-          }
+          } else { container.innerHTML = `<div class="text-center text-xs opacity-50 py-2">Belum ada ucapan.</div>`; }
         }
-      } catch (err) {
-        container.innerHTML = `<div class="text-center text-xs opacity-50 py-2">Gagal memuat ucapan.</div>`;
-      }
+      } catch (err) { container.innerHTML = `<div class="text-center text-xs opacity-50 py-2">Gagal memuat ucapan.</div>`; }
     }
 
-    window.onload = function() {
-      loadSettings();
-      loadWishes();
-    };
+    window.onload = function() { loadSettings(); loadWishes(); };
   </script>
 </body>
 </html>

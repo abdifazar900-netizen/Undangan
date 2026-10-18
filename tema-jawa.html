@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pawiwahan Ageng - Undangan Pernikahan Adat Jawa</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Cinzel, Playfair Display, Plus Jakarta Sans -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Playfair+Display:ital,wght@0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    body { 
+      font-family: 'Plus Jakarta Sans', sans-serif; 
+      background-color: #0d0a07; 
+      color: #f3e5d8; 
+    }
+
+    .font-jawa-title { font-family: 'Cinzel', serif; }
+    .font-serif-sub { font-family: 'Playfair Display', serif; }
+    
+    /* Bingkai Khas Rumah Joglo */
+    .frame-joglo {
+      border-radius: 90px 90px 16px 16px;
+      border: 2px solid #d4af37;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+    }
+
+    .card-jawa { 
+      background: linear-gradient(145deg, rgba(26, 18, 12, 0.95), rgba(15, 10, 6, 0.98));
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(212, 175, 55, 0.05);
+    }
+
+    /* Ukiran Emas Border Accent */
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #FFF099 0%, #D4AF37 50%, #AA7C11 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .gold-button {
+      background: linear-gradient(135deg, #D4AF37 0%, #AA7C11 100%);
+      color: #0d0a07;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    }
+
+    .gold-button:hover {
+      background: linear-gradient(135deg, #FFE066 0%, #C59B27 100%);
+    }
+
+    #cover-screen { transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out; }
+    #cover-screen.hidden-cover { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+  </style>
+</head>
+<body class="min-h-screen selection:bg-amber-900 selection:text-amber-100">
+
+  <!-- ==================== COVER SCREEN ==================== -->
+  <div id="cover-screen" class="fixed inset-0 z-50 flex flex-col justify-between items-center text-center p-6 bg-cover bg-center" style="background-image: linear-gradient(to bottom, rgba(13,10,7,0.75), rgba(13,10,7,0.95)), url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80');">
+    
+    <!-- Header Ornamen Gunungan -->
+    <div class="pt-6 space-y-2 flex flex-col items-center">
+      <!-- SVG Gunungan Wayang -->
+      <svg class="w-16 h-20 text-[#d4af37] drop-shadow-[0_0_8px_rgba(212,175,55,0.4)]" viewBox="0 0 100 120" fill="currentColor">
+        <path d="M50 5 L90 100 L70 100 L50 80 L30 100 L10 100 Z" stroke="#d4af37" stroke-width="2" fill="none"/>
+        <circle cx="50" cy="45" r="12" stroke="#d4af37" stroke-width="1.5" fill="none"/>
+        <path d="M50 15 L50 75 M35 55 Q50 35 65 55" stroke="#d4af37" stroke-width="1.5" fill="none"/>
+      </svg>
+      <p class="text-[10px] uppercase tracking-[0.4em] text-amber-300/80 font-bold">Pawiwahan Ageng</p>
+      <h1 class="text-3xl font-jawa-title gold-gradient-text tracking-wide py-1" id="txt-judul-cover">Loading...</h1>
+      <p class="text-xs text-amber-200/80 font-serif-sub italic" id="txt-tgl-cover">-</p>
+    </div>
+
+    <!-- Banner Tamu Card -->
+    <div class="w-full max-w-xs card-jawa p-6 rounded-2xl space-y-3 my-auto text-center relative border-amber-500/40">
+      <p class="text-xs text-amber-200/70 italic font-serif-sub">Katur Dhumateng Bapak/Ibu/Sdr/i:</p>
+      <h2 id="coverPenerimaTamu" class="text-lg font-bold font-jawa-title text-amber-300 capitalize">Tamu Undangan</h2>
+      <p class="text-[11px] text-amber-100/70 leading-relaxed">Sowan linambaran kurmat, hangaturi rawuh wonten ing hajad pawiwahan kula.</p>
+      
+      <button onclick="bukaUndangan()" class="w-full mt-2 gold-button font-bold text-xs py-3 rounded-xl transition flex items-center justify-center gap-2 tracking-wider">
+        <i class="fa-solid fa-envelope-open"></i> BUKA UNDANGAN
+      </button>
+    </div>
+
+    <p class="text-[10px] text-amber-400/50 pb-4">Nyuwun pangapunten menawi wonten kalepatan serat asma</p>
+  </div>
+
+  <!-- ==================== KONTEN UTAMA ==================== -->
+  <div id="main-wrapper" class="max-w-md mx-auto min-h-screen bg-[#140e0a] border-x border-amber-900/40 shadow-2xl relative pb-20">
+
+    <!-- HERO HEADER JOGLO -->
+    <section id="bg-hero" class="relative h-[55vh] flex flex-col justify-end items-center text-center p-6 bg-cover bg-center rounded-b-[40px] border-b border-amber-600/30" style="background-image: linear-gradient(to bottom, rgba(20,14,10,0.3), rgba(20,14,10,0.95)), url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80');">
+      <div class="space-y-2 pb-6 flex flex-col items-center">
+        <span class="px-3 py-1 bg-amber-950/80 border border-amber-600/40 rounded-full text-[9px] uppercase tracking-widest text-amber-300 font-semibold mb-1">
+          Walimatul 'Ursy
+        </span>
+        <h1 class="text-4xl font-jawa-title gold-gradient-text" id="txt-judul-utama">Loading...</h1>
+        <p class="text-xs text-amber-200/80 font-serif-sub italic" id="txt-tgl-hero">-</p>
+      </div>
+    </section>
+
+    <!-- MEMPELAI PENGANTIN -->
+    <section class="p-6 space-y-8 text-center">
+      <div class="space-y-3">
+        <p class="text-xs text-amber-200/80 italic font-serif-sub max-w-xs mx-auto leading-relaxed">
+          "Mugi-mugi Allah Swt. ngumpulaken ingkang tinakdiraken wonten ing kabagyan lan katentreman."
+        </p>
+        <div class="w-16 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto my-2"></div>
+        <h2 class="text-2xl font-jawa-title text-amber-300 tracking-wide">Mempelai Pengantin</h2>
+      </div>
+
+      <!-- Pengantin Pria -->
+      <div class="card-jawa p-6 rounded-2xl space-y-3 relative overflow-hidden">
+        <div class="w-32 h-40 mx-auto frame-joglo overflow-hidden bg-amber-950/50">
+          <img id="img-pria" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" class="w-full h-full object-cover">
+        </div>
+        <div>
+          <h3 class="text-lg font-jawa-title font-bold text-amber-200" id="txt-nama-pria">Pengantin Pria</h3>
+          <p class="text-xs text-amber-400 font-medium mt-1">Mempelai Pria</p>
+        </div>
+        <p class="text-xs text-amber-100/70 leading-relaxed" id="txt-anak-pria">-</p>
+      </div>
+
+      <div class="text-amber-400 font-jawa-title text-2xl">&amp;</div>
+
+      <!-- Pengantin Wanita -->
+      <div class="card-jawa p-6 rounded-2xl space-y-3 relative overflow-hidden">
+        <div class="w-32 h-40 mx-auto frame-joglo overflow-hidden bg-amber-950/50">
+          <img id="img-wanita" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" class="w-full h-full object-cover">
+        </div>
+        <div>
+          <h3 class="text-lg font-jawa-title font-bold text-amber-200" id="txt-nama-wanita">Pengantin Wanita</h3>
+          <p class="text-xs text-amber-400 font-medium mt-1">Mempelai Wanita</p>
+        </div>
+        <p class="text-xs text-amber-100/70 leading-relaxed" id="txt-anak-wanita">-</p>
+      </div>
+    </section>
+
+    <!-- DETAIL ACARA -->
+    <section class="p-6 space-y-4">
+      <div class="text-center">
+        <h2 class="text-2xl font-jawa-title text-amber-300">Rangkaian Acara</h2>
+      </div>
+
+      <div class="card-jawa p-6 rounded-2xl space-y-4 text-center border-amber-500/30">
+        <div class="w-12 h-12 mx-auto bg-amber-950 text-amber-300 border border-amber-600/40 rounded-full flex items-center justify-center text-xl shadow-inner">
+          <i class="fa-solid fa-rings-wedding"></i>
+        </div>
+        <h3 class="text-lg font-jawa-title font-bold text-amber-200">Akad &amp; Resepsi</h3>
+        <p class="text-xs text-amber-300 font-semibold" id="txt-tgl-acara">-</p>
+        
+        <div class="grid grid-cols-2 gap-2 text-xs py-2.5 bg-amber-950/40 rounded-xl border border-amber-800/40">
+          <div>
+            <p class="text-[9px] text-amber-400 uppercase font-semibold">Akad Nikah</p>
+            <p class="font-bold text-amber-100" id="txt-jam-akad">-</p>
+          </div>
+          <div class="border-l border-amber-800/40">
+            <p class="text-[9px] text-amber-400 uppercase font-semibold">Resepsi</p>
+            <p class="font-bold text-amber-100" id="txt-jam-resepsi">-</p>
+          </div>
+        </div>
+
+        <div class="space-y-1 pt-1">
+          <p class="text-xs font-bold text-amber-200" id="txt-lokasi-nama">-</p>
+          <p class="text-[11px] text-amber-100/70 leading-relaxed" id="txt-lokasi-alamat">-</p>
+        </div>
+
+        <a id="link-maps" href="#" target="_blank" class="inline-flex items-center gap-2 gold-button text-xs font-bold px-5 py-2.5 rounded-xl transition mt-2 shadow-md">
+          <i class="fa-solid fa-map-location-dot"></i> PETA LOKASI ACARA
+        </a>
+      </div>
+    </section>
+
+    <!-- GALERI FOTO -->
+    <section class="p-6 space-y-4">
+      <div class="text-center">
+        <h2 class="text-2xl font-jawa-title text-amber-300">Galeri Momen</h2>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <img id="img-galeri-1" src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=400&q=80" class="rounded-xl h-40 w-full object-cover border border-amber-700/40 shadow-md">
+        <img id="img-galeri-2" src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=400&q=80" class="rounded-xl h-40 w-full object-cover border border-amber-700/40 shadow-md">
+        <img id="img-galeri-3" src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=400&q=80" class="rounded-xl h-40 w-full object-cover border border-amber-700/40 shadow-md">
+        <img id="img-galeri-4" src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=400&q=80" class="rounded-xl h-40 w-full object-cover border border-amber-700/40 shadow-md">
+      </div>
+    </section>
+
+    <!-- RSVP & UCAPAN -->
+    <section class="p-6 space-y-6">
+      <div class="card-jawa p-6 rounded-2xl space-y-4 border-amber-500/30">
+        <h3 class="text-lg font-jawa-title font-bold text-amber-200 text-center">Konfirmasi Kehadiran</h3>
+        <form id="rsvpForm" onsubmit="kirimRSVP(event)" class="space-y-3">
+          <div>
+            <label class="block text-xs text-amber-300 font-medium mb-1">Status Kehadiran</label>
+            <select id="rsvpStatus" class="w-full bg-[#1c130d] border border-amber-800/60 text-xs rounded-xl px-3 py-2.5 text-amber-100 focus:outline-none focus:border-amber-500">
+              <option value="Hadir">Badan Kula Badhe Rawuh (Hadir)</option>
+              <option value="Tidak Hadir">Nyundhung Pangapunten (Tidak Hadir)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs text-amber-300 font-medium mb-1">Atur Puji &amp; Donga Restu</label>
+            <textarea id="rsvpUcapan" required placeholder="Serat puji donga restu panjenengan..." class="w-full bg-[#1c130d] border border-amber-800/60 text-xs rounded-xl p-3 text-amber-100 h-20 focus:outline-none focus:border-amber-500"></textarea>
+          </div>
+          <button type="submit" id="btnRsvp" class="w-full gold-button font-bold text-xs py-3 rounded-xl transition shadow-md">
+            KIRIM DONGA RESTU
+          </button>
+        </form>
+      </div>
+
+      <!-- UCAPAN REALTIME -->
+      <div class="space-y-3">
+        <h3 class="text-sm font-bold text-amber-300 flex items-center gap-2 font-jawa-title">
+          <i class="fa-solid fa-comments text-amber-400"></i> Donga Restu Tamu
+        </h3>
+        <div id="wishesContainer" class="space-y-2 max-h-64 overflow-y-auto pr-1">
+          <div class="text-center text-xs text-amber-400/50 py-4">Ngentosi donga restu...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="text-center text-amber-400/60 text-[11px] pb-8 space-y-1 px-4">
+      <p class="font-serif-sub italic">Matur nuwun sanget atas kawigatosan lan puji donga restu panjenengan sedaya.</p>
+      <p class="font-bold text-amber-300 mt-2 font-jawa-title">Matur Nuwun</p>
+    </footer>
+
+  </div>
+
+  <!-- SCRIPT KONEKSI -->
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzil42IARd7zFttb8RtxWEJf7CrcZFtm-hDUJCHPr1GqImwa2Ogb0FqCCs-6gaA4q93Xw/exec";
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const namaTamu = urlParams.get('to');
+    if (namaTamu) document.getElementById('coverPenerimaTamu').textContent = namaTamu;
+
+    function bukaUndangan() {
+      document.getElementById('cover-screen').classList.add('hidden-cover');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function loadSettings() {
+      try {
+        const res = await fetch(SCRIPT_URL + "?action=getSettings");
+        const json = await res.json();
+        
+        if (json.status === "success" && json.data) {
+          const s = json.data;
+          const pPria = s.panggilan_pria || s.nama_pria || "Pria";
+          const pWanita = s.panggilan_wanita || s.nama_wanita || "Wanita";
+          const judul = pPria + " & " + pWanita;
+
+          document.getElementById('txt-judul-cover').innerText = judul;
+          document.getElementById('txt-judul-utama').innerText = judul;
+          if(s.tanggal_acara) {
+            document.getElementById('txt-tgl-cover').innerText = s.tanggal_acara;
+            document.getElementById('txt-tgl-hero').innerText = s.tanggal_acara;
+          }
+
+          if (s.foto_bg) {
+            document.getElementById('cover-screen').style.backgroundImage = `linear-gradient(to bottom, rgba(13,10,7,0.75), rgba(13,10,7,0.95)), url('${s.foto_bg}')`;
+            document.getElementById('bg-hero').style.backgroundImage = `linear-gradient(to bottom, rgba(20,14,10,0.3), rgba(20,14,10,0.95)), url('${s.foto_bg}')`;
+          }
+
+          if(s.nama_pria) document.getElementById('txt-nama-pria').innerText = s.nama_pria;
+          if(s.anak_pria) document.getElementById('txt-anak-pria').innerText = s.anak_pria;
+          if(s.foto_pria) document.getElementById('img-pria').src = s.foto_pria;
+
+          if(s.nama_wanita) document.getElementById('txt-nama-wanita').innerText = s.nama_wanita;
+          if(s.anak_wanita) document.getElementById('txt-anak-wanita').innerText = s.anak_wanita;
+          if(s.foto_wanita) document.getElementById('img-wanita').src = s.foto_wanita;
+
+          if(s.tanggal_acara) document.getElementById('txt-tgl-acara').innerText = s.tanggal_acara;
+          if(s.jam_akad) document.getElementById('txt-jam-akad').innerText = s.jam_akad;
+          if(s.jam_resepsi) document.getElementById('txt-jam-resepsi').innerText = s.jam_resepsi;
+          if(s.lokasi_nama) document.getElementById('txt-lokasi-nama').innerText = s.lokasi_nama;
+          if(s.lokasi_alamat) document.getElementById('txt-lokasi-alamat').innerText = s.lokasi_alamat;
+          if(s.maps_link) document.getElementById('link-maps').href = s.maps_link;
+
+          if(s.foto_galeri_1) document.getElementById('img-galeri-1').src = s.foto_galeri_1;
+          if(s.foto_galeri_2) document.getElementById('img-galeri-2').src = s.foto_galeri_2;
+          if(s.foto_galeri_3) document.getElementById('img-galeri-3').src = s.foto_galeri_3;
+          if(s.foto_galeri_4) document.getElementById('img-galeri-4').src = s.foto_galeri_4;
+        }
+      } catch (err) { console.error("Gagal memuat data Jawa:", err); }
+    }
+
+    async function kirimRSVP(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btnRsvp');
+      btn.disabled = true;
+      btn.textContent = "Ngentosi...";
+
+      try {
+        const payload = {
+          action: 'rsvp',
+          nama: namaTamu || "Tamu Undangan",
+          status: document.getElementById('rsvpStatus').value,
+          ucapan: document.getElementById('rsvpUcapan').value
+        };
+        await fetch(SCRIPT_URL, { 
+          method: 'POST', 
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
+        alert('Matur nuwun, donga restu panjenengan sampun katampi!');
+        document.getElementById('rsvpUcapan').value = '';
+        setTimeout(loadWishes, 1500);
+      } catch (err) { alert('Gagal ngirim donga restu.'); }
+      finally { btn.disabled = false; btn.textContent = "KIRIM DONGA RESTU"; }
+    }
+
+    async function loadWishes() {
+      const container = document.getElementById('wishesContainer');
+      try {
+        const res = await fetch(SCRIPT_URL + "?action=getGuests");
+        const json = await res.json();
+        if (json.status === "success" && json.data) {
+          const wishes = json.data.filter(g => g.ucapan || (g.statusRsvp && g.statusRsvp !== "Belum Konfirmasi"));
+          if (wishes.length > 0) {
+            container.innerHTML = '';
+            wishes.forEach(item => {
+              const box = document.createElement('div');
+              box.className = "card-jawa p-3 rounded-xl text-xs space-y-1 border-amber-600/30";
+              box.innerHTML = `
+                <div class="flex justify-between font-bold text-amber-200">
+                  <span>${item.nama}</span>
+                  <span class="text-[10px] ${item.statusRsvp === 'Hadir' ? 'text-emerald-400' : 'text-rose-400'}">${item.statusRsvp || 'Hadir'}</span>
+                </div>
+                <p class="text-amber-100/80 leading-relaxed">${item.ucapan || '-'}</p>
+              `;
+              container.appendChild(box);
+            });
+          } else { container.innerHTML = `<div class="text-center text-xs text-amber-400/50 py-2">Dereng wonten donga restu.</div>`; }
+        }
+      } catch (err) { container.innerHTML = `<div class="text-center text-xs text-amber-400/50 py-2">Gagal ngemot donga restu.</div>`; }
+    }
+
+    window.onload = function() { loadSettings(); loadWishes(); };
+  </script>
+</body>
+</html>
